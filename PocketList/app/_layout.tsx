@@ -29,12 +29,14 @@ export default function RootLayout() {
         }}
       >
         {/* <Stack.Screen name="(tabs)" options={{ headerShown: false }} /> */}
-        <Stack.Screen name="screens/intro/intro" options={{ headerShown: false }} />
+        {/* <Stack.Screen
+          name="screens/intro/intro"
+          options={{ headerShown: false }}
+        /> */}
         <Stack.Screen
-          name="explore"
-          options={{ headerShown: true, title: "hey" }}
+          name="screens/auth/login/login"
+          options={{ headerShown: false }}
         />
-        <Stack.Screen name="index" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
       </Stack>
       <StatusBar style="auto" />

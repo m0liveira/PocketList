@@ -1,0 +1,91 @@
+import { StyleSheet } from "react-native";
+
+export const loginStyles = (colors: any) =>
+  StyleSheet.create({
+    container: {
+      position: "relative",
+      top: 0,
+      left: 0,
+      flex: 1,
+      justifyContent: "flex-start",
+      alignItems: "center",
+      backgroundColor: colors.bg400,
+      paddingTop: "78%",
+    },
+    wave: {
+      position: "absolute",
+      top: 0,
+      left: 0,
+      right: 0,
+      transform: [{ rotate: "180deg" }, { scaleX: -1 }],
+      zIndex: 0,
+    },
+    image: {
+      position: "absolute",
+      top: "10%",
+      aspectRatio: 1 / 1,
+      zIndex: 1,
+    },
+    separator: {
+      position: "relative",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      width: "85%",
+      marginTop: 30,
+    },
+    line: {
+      width: "100%",
+      height: 1,
+      backgroundColor: colors.n400,
+    },
+    separatorText: {
+      position: "absolute",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: colors.bg400,
+      color: colors.n300,
+      fontSize: 10,
+      paddingHorizontal: 10,
+      paddingBottom: 3,
+      textAlign: "center",
+    },
+    methodsContainer: {
+      display: "flex",
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      width: "85%",
+      marginTop: 30,
+    },
+    methodBtn: {
+      display: "flex",
+      flexDirection: "row",
+      justifyContent: "flex-start",
+      alignItems: "center",
+      gap: 15,
+      backgroundColor: colors.n50,
+      borderRadius: 5,
+      width: "45%",
+      paddingVertical: 10,
+      paddingHorizontal: 15,
+    },
+    methodBtnIcon: {
+      aspectRatio: 1 / 1,
+      height: "100%",
+    },
+    methodBtnText: {
+      color: colors.n800,
+      fontSize: 14,
+    },
+    linkText: {
+      color: colors.n400,
+      fontSize: 14,
+      marginTop: 80,
+    },
+    link: {
+      color: colors.p200,
+      fontSize: 14,
+    },
+  });

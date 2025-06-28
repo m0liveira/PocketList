@@ -1,25 +1,23 @@
 import React from "react";
 import {
   useColorScheme,
-  StyleSheet,
   Dimensions,
   Animated,
   Text,
   View,
-  Image,
   Pressable,
 } from "react-native";
 import { Link, useRouter } from "expo-router";
 import Svg, { Path } from "react-native-svg";
 import { globalStyles } from "@/constants/GlobalStyles";
 import { Colors } from "@/constants/Colors";
-import { introStyles } from "./intro.styles";
+import { introStyles } from "./styles";
 
 export default function Intro() {
   const router = useRouter();
   const colorScheme = useColorScheme();
   const colors = Colors.light;
-  //   const colors = Colors[colorScheme ?? "light"];
+  // const colors = Colors[colorScheme ?? "light"];
   const styles = introStyles(colors);
 
   let [index, setIndex] = React.useState(0);
@@ -72,7 +70,7 @@ export default function Intro() {
 
   const handleNext = () => {
     if (index === display.length - 1) {
-      router.replace("/explore");
+      router.replace("/screens/auth/login/login");
       return;
     }
 
@@ -125,7 +123,10 @@ export default function Intro() {
           />
         ))}
 
-        <Link style={[globalStyles.text, styles.link]} href="/explore">
+        <Link
+          style={[globalStyles.text, styles.link]}
+          href="/screens/auth/login/login"
+        >
           Saltar
         </Link>
       </View>
