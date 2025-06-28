@@ -1,5 +1,4 @@
 import React from "react";
-import Svg, { Path } from "react-native-svg";
 import {
   useColorScheme,
   Dimensions,
@@ -14,7 +13,7 @@ import { globalStyles } from "@/constants/GlobalStyles";
 import { Colors } from "@/constants/Colors";
 import { loginStyles } from "./styles";
 import AuthForm from "../../../../components/authForm/AuthForm";
-import { Wave } from "../../../../components/svgs/Svgs";
+import * as CustomSvgs from "../../../../components/svgs/Svgs";
 
 const loginMethods = [
   {
@@ -49,7 +48,7 @@ export default function Login() {
 
   return (
     <View style={styles.container}>
-      <Wave classname={styles.wave} color={colors.p400} />
+      <CustomSvgs.Wave classname={styles.wave} color={colors.p400} />
 
       <Image
         style={styles.image}

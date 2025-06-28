@@ -18,6 +18,25 @@ export const Wave = (props: any) => (
   </Svg>
 );
 
+export const BackArrow = (props: any) => (
+  <Svg viewBox="0 0 24 24" fill="none" style={props.classname}>
+    <Path
+      d="M19 12H5"
+      stroke={props.color || "#000"}
+      strokeWidth="3"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <Path
+      d="M12 19L5 12L12 5"
+      stroke={props.color || "#000"}
+      strokeWidth="3"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </Svg>
+);
+
 export const Email = (props: any) => (
   <Svg
     viewBox="0 0 256 256"

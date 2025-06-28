@@ -11,6 +11,15 @@ export const formStyles = (colors: any) =>
       fontSize: 26,
       marginBottom: 30,
     },
+    titleForgotPassword: {
+      marginTop: 50,
+      marginBottom: 30,
+    },
+    subtitle: {
+      color: colors.n300,
+      fontSize: 16,
+      marginBottom: 60,
+    },
     inputContainer: {
       display: "flex",
       flexDirection: "row",
@@ -44,9 +53,9 @@ export const formStyles = (colors: any) =>
     link: {
       color: colors.p200,
       fontSize: 12,
-      width: "100%",
-      textAlign: "right",
+      width: "32%",
       marginTop: -5,
+      marginLeft: "68%",
     },
     button: {
       marginTop: 30,

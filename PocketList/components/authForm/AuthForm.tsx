@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import Svg, { Path } from "react-native-svg";
 import { useColorScheme, Text, View, TextInput, Pressable } from "react-native";
 import { Controller } from "react-hook-form";
@@ -12,6 +13,8 @@ const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
 export default function AuthForm(props: any) {
   const router = useRouter();
   const styles = formStyles(props.colors);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const loginInputs = [
     {
       svg: (
@@ -41,10 +44,49 @@ export default function AuthForm(props: any) {
       },
     },
   ];
+  const forgotPasswordInputs = [
+    {
+      svg: (
+        <CustmoSvgs.Email classname={styles.svg} color={props.colors.n400} />
+      ),
+      name: "email",
+      placeholder: "Ex. pocketList@email.com",
+      rules: {
+        required: "O campo é obrigatório",
+        pattern: {
+          value: emailRegex,
+          message: "O email deve ser válido",
+        },
+      },
+    },
+  ];
+  const [inputDisplay, setInputDisplay] = useState(loginInputs);
+
+  useEffect(() => {
+    switch (props.formType) {
+      case "forgotPassword":
+        setInputDisplay(forgotPasswordInputs);
+        break;
+      case "Register":
+        setInputDisplay(loginInputs);
+        break;
+      default:
+        setInputDisplay(loginInputs);
+        break;
+    }
+  }, []);
 
   return (
     <View style={styles.container}>
-      <Text style={[globalStyles.text, styles.title]}>
+      <Text
+        style={[
+          globalStyles.text,
+          styles.title,
+          props.formType === "forgotPassword"
+            ? styles.titleForgotPassword
+            : null,
+        ]}
+      >
         {props.formType === "Login"
           ? "Entrar"
           : props.formType === "Register"
@@ -52,7 +94,14 @@ export default function AuthForm(props: any) {
           : "Esqueceu a senha?"}
       </Text>
 
-      {loginInputs.map((input, index) => (
+      {props.formType === "forgotPassword" ? (
+        <Text style={[globalStyles.text, styles.subtitle]}>
+          Por vezes acontece! Por favor insira o endereço de email associado a
+          sua conta.
+        </Text>
+      ) : null}
+
+      {inputDisplay.map((input, index) => (
         <View key={index} style={styles.inputContainer}>
           {input.svg}
 
@@ -87,7 +136,7 @@ export default function AuthForm(props: any) {
       {props.formType === "Login" ? (
         <Link
           style={[globalStyles.text, styles.link]}
-          href="/screens/auth/login/login"
+          href="/screens/auth/forgotPassword/forgotpassword"
         >
           Esqueceu a senha?
         </Link>
