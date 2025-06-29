@@ -1,4 +1,4 @@
-import { getFirebaseAuth } from '../app/firebaseConfig';
+import firebaseAuth from "@/src/firebaseConfig";
 import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
@@ -6,42 +6,24 @@ import {
     signOut,
 } from "firebase/auth";
 
-const auth = getFirebaseAuth();
-
 // AUTH FUNCTIONS
 
 export const registerUser = async (email: string, password: string) => {
-    try {
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        return { user: userCredential.user };
-    } catch (error) {
-        throw error;
-    }
+    const userCredential = await createUserWithEmailAndPassword(firebaseAuth, email, password);
+    return { user: userCredential.user };
 };
 
 export const loginUser = async (email: string, password: string) => {
-    try {
-        const userCredential = await signInWithEmailAndPassword(auth, email, password);
-        return { user: userCredential.user };
-    } catch (error) {
-        throw error;
-    }
+    const userCredential = await signInWithEmailAndPassword(firebaseAuth, email, password);
+    return { user: userCredential.user };
 };
 
 export const resetPassword = async (email: string) => {
-    try {
-        await sendPasswordResetEmail(auth, email);
-        return true;
-    } catch (error) {
-        throw error;
-    }
+    await sendPasswordResetEmail(firebaseAuth, email);
+    return true;
 };
 
 export const logoutUser = async () => {
-    try {
-        await signOut(auth);
-        return true;
-    } catch (error) {
-        throw error;
-    }
+    await signOut(firebaseAuth);
+    return true;
 };

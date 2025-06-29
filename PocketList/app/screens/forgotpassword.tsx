@@ -1,30 +1,26 @@
-import {
-  useColorScheme,
-  View,
-  Image,
-  Pressable,
-  Text
-} from "react-native";
+import { useState } from "react";
+import { useColorScheme, View, Image, Pressable } from "react-native";
 import { useForm } from "react-hook-form";
-import { useRouter, Link } from "expo-router";
+import { useRouter } from "expo-router";
 import { Colors } from "@/constants/Colors";
-import { registerStyles } from "./styles";
-import { globalStyles } from "@/constants/GlobalStyles";
-import AuthForm from "../../../../components/authForm/AuthForm";
-import * as CustomSvgs from "../../../../components/svgs/Svgs";
+import { forgotPasswordStyles } from "@/src/styles/forgotPassword/styles";
+import AuthForm from "../../components/authForm/AuthForm";
+import * as CustomSvgs from "../../components/svgs/Svgs";
 
-export default function Signup() {
+export default function ForgotPassword() {
   const router = useRouter();
   const colorScheme = useColorScheme();
   const colors = Colors.light;
   // const colors = Colors[colorScheme ?? "light"];
-  const styles = registerStyles(colors);
+  const styles = forgotPasswordStyles(colors);
 
   const {
     control,
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = (data: any) => {
     console.log("Form Data:", data);
@@ -49,21 +45,12 @@ export default function Signup() {
 
       <AuthForm
         colors={colors}
-        formType="Register"
+        formType="ForgotPassword"
         control={control}
         errors={errors}
         handleSubmit={handleSubmit(onSubmit)}
+        isLoading={isLoading}
       />
-
-      <Text style={[globalStyles.text, styles.linkText]}>
-        Já está no PocketList?{" "}
-        <Link
-          href="/screens/auth/login/login"
-          style={[globalStyles.text, styles.link]}
-        >
-          Entrar
-        </Link>
-      </Text>
     </View>
   );
 }

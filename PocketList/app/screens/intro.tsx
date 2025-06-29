@@ -11,7 +11,7 @@ import { Link, useRouter } from "expo-router";
 import Svg, { Path } from "react-native-svg";
 import { globalStyles } from "@/constants/GlobalStyles";
 import { Colors } from "@/constants/Colors";
-import { introStyles } from "./styles";
+import { introStyles } from "@/src/styles/intro/styles";
 
 export default function Intro() {
   const router = useRouter();
@@ -70,7 +70,7 @@ export default function Intro() {
 
   const handleNext = () => {
     if (index === display.length - 1) {
-      router.replace("/screens/auth/login/login");
+      router.replace("/screens/login");
       return;
     }
 
@@ -125,7 +125,7 @@ export default function Intro() {
 
         <Link
           style={[globalStyles.text, styles.link]}
-          href="/screens/auth/login/login"
+          href="/screens/login"
         >
           Saltar
         </Link>

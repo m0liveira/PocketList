@@ -1,18 +1,12 @@
-import React from "react";
-import {
-  useColorScheme,
-  Text,
-  View,
-  Image,
-  Pressable,
-} from "react-native";
+import { useState } from "react";
+import { useColorScheme, Text, View, Image, Pressable } from "react-native";
 import { useForm } from "react-hook-form";
 import { Link, useRouter } from "expo-router";
 import { globalStyles } from "@/constants/GlobalStyles";
 import { Colors } from "@/constants/Colors";
-import { loginStyles } from "./styles";
-import AuthForm from "../../../../components/authForm/AuthForm";
-import * as CustomSvgs from "../../../../components/svgs/Svgs";
+import { loginStyles } from "@/src/styles/login/styles";
+import AuthForm from "../../components/authForm/AuthForm";
+import * as CustomSvgs from "../../components/svgs/Svgs";
 
 const loginMethods = [
   {
@@ -40,6 +34,8 @@ export default function Login() {
     formState: { errors },
   } = useForm();
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const onSubmit = (data: any) => {
     console.log("Form Data:", data);
   };
@@ -63,6 +59,7 @@ export default function Login() {
         control={control}
         errors={errors}
         handleSubmit={handleSubmit(onSubmit)}
+        isLoading={isLoading}
       />
 
       <View style={styles.separator}>
@@ -91,7 +88,7 @@ export default function Login() {
       <Text style={[globalStyles.text, styles.linkText]}>
         Novo no PocketList?{" "}
         <Link
-          href="/screens/auth/signup/signup"
+          href="/screens/signup"
           style={[globalStyles.text, styles.link]}
         >
           Registe-se aqui

@@ -27,9 +27,11 @@ export default function RootLayout() {
           headerShown: false,
         }}
       >
-        <Stack.Screen name="screens/auth/login/login" />
-        <Stack.Screen name="screens/auth/signup/signup" />
-        <Stack.Screen name="screens/auth/forgot-password/forgotpassword" />
+        <Stack.Screen name="index" />
+        <Stack.Screen name="screens/intro" />
+        <Stack.Screen name="screens/login" />
+        <Stack.Screen name="screens/signup" />
+        <Stack.Screen name="screens/forgotpassword" />
         <Stack.Screen name="+not-found" />
       </Stack>
       <StatusBar style="auto" />

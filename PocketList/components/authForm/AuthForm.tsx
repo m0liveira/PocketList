@@ -113,6 +113,8 @@ export default function AuthForm(props: any) {
           message:
             "A senha deve ter pelo menos 8 caracteres, incluindo letras e números",
         },
+        validate: (value: any, formValues: { password: any }) =>
+          value === formValues.password || "As senhas não coincidem",
       },
     },
   ];
@@ -121,16 +123,16 @@ export default function AuthForm(props: any) {
   useEffect(() => {
     switch (props.formType) {
       case "ForgotPassword":
-        setInputDisplay(ForgotPasswordInputs);
+        setInputDisplay(ForgotPasswordInputs as typeof loginInputs);
         break;
       case "Register":
-        setInputDisplay(registerInputs);
+        setInputDisplay(registerInputs as typeof loginInputs);
         break;
       default:
         setInputDisplay(loginInputs);
         break;
     }
-  }, []);
+  }, [props.formType]);
 
   return (
     <View style={styles.container}>
@@ -234,7 +236,7 @@ export default function AuthForm(props: any) {
       {props.formType === "Login" ? (
         <Link
           style={[globalStyles.text, styles.link]}
-          href="/screens/auth/forgotPassword/forgotpassword"
+          href="/screens/forgotpassword"
         >
           Esqueceu a senha?
         </Link>
@@ -247,23 +249,21 @@ export default function AuthForm(props: any) {
           ]}
         >
           Ao registar, está a concordar com os nossos{" "}
-          <Link
-            style={[globalStyles.text, styles.link]}
-            href="/screens/auth/login/login"
-          >
+          <Link style={[globalStyles.text, styles.link]} href="/screens/login">
             Termos de serviço
           </Link>{" "}
           e{" "}
-          <Link
-            style={[globalStyles.text, styles.link]}
-            href="/screens/auth/login/login"
-          >
+          <Link style={[globalStyles.text, styles.link]} href="/screens/login">
             Politica de privacidade
           </Link>
         </Text>
       ) : null}
 
-      <Pressable onPress={props.handleSubmit} style={styles.button}>
+      <Pressable
+        onPress={props.handleSubmit}
+        style={styles.button}
+        disabled={props.isLoading}
+      >
         <Text style={[globalStyles.text, styles.btnText]}>
           {props.formType === "Login"
             ? "Entrar"

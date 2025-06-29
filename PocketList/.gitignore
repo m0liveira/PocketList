@@ -38,5 +38,6 @@ yarn-error.*
 
 # environment
 .env
+app.config.js
 
 app-example
