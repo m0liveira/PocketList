@@ -1,7 +1,6 @@
 import React from "react";
 import {
   useColorScheme,
-  Dimensions,
   Text,
   View,
   Image,
@@ -30,7 +29,6 @@ const loginMethods = [
 
 export default function Login() {
   const router = useRouter();
-  const screenWidth = Dimensions.get("window").width;
   const colorScheme = useColorScheme();
   const colors = Colors.light;
   // const colors = Colors[colorScheme ?? "light"];

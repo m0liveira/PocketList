@@ -1,6 +1,5 @@
 import {
   useColorScheme,
-  Dimensions,
   View,
   Image,
   Pressable,
@@ -16,7 +15,6 @@ import * as CustomSvgs from "../../../../components/svgs/Svgs";
 
 export default function Signup() {
   const router = useRouter();
-  const screenWidth = Dimensions.get("window").width;
   const colorScheme = useColorScheme();
   const colors = Colors.light;
   // const colors = Colors[colorScheme ?? "light"];

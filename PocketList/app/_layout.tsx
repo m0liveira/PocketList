@@ -7,7 +7,6 @@ import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import "react-native-reanimated";
-
 import { useColorScheme } from "@/hooks/useColorScheme";
 
 export default function RootLayout() {
@@ -17,7 +16,6 @@ export default function RootLayout() {
   });
 
   if (!loaded) {
-    // Async font loading only occurs in development.
     return null;
   }
 
@@ -26,25 +24,12 @@ export default function RootLayout() {
       <Stack
         screenOptions={{
           animation: "slide_from_right",
+          headerShown: false,
         }}
       >
-        {/* <Stack.Screen name="(tabs)" options={{ headerShown: false }} /> */}
-        {/* <Stack.Screen
-          name="screens/intro/intro"
-          options={{ headerShown: false }}
-        /> */}
-        <Stack.Screen
-          name="screens/auth/login/login"
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="screens/auth/signup/signup"
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="screens/auth/forgotPassword/forgotpassword"
-          options={{ headerShown: false }}
-        />
+        <Stack.Screen name="screens/auth/login/login" />
+        <Stack.Screen name="screens/auth/signup/signup" />
+        <Stack.Screen name="screens/auth/forgot-password/forgotpassword" />
         <Stack.Screen name="+not-found" />
       </Stack>
       <StatusBar style="auto" />

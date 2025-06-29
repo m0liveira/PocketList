@@ -8,7 +8,7 @@ import * as CustmoSvgs from "../svgs/Svgs";
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
-const nameRegex = /^[a-zA-Z\s]{1,16}$/;
+const nameRegex = /^(?!.*\s{2,})([a-zA-Z]+(?:\s[a-zA-Z]+)*){1,16}$/;
 
 export default function AuthForm(props: any) {
   const styles = formStyles(props.colors);
