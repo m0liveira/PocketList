@@ -30,6 +30,12 @@ export const formStyles = (colors: any) =>
       height: 70,
       marginBottom: 5,
     },
+    svgContainer:{
+      position: "absolute",
+      top: '15%',
+      right: 0,
+      zIndex: 1,
+    },
     svg: {
       width: 23,
       height: 23,

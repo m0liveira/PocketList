@@ -1,40 +1,26 @@
-import React from "react";
 import {
   useColorScheme,
   Dimensions,
-  Text,
   View,
   Image,
   Pressable,
+  Text
 } from "react-native";
 import { useForm } from "react-hook-form";
-import { Link, useRouter } from "expo-router";
-import { globalStyles } from "@/constants/GlobalStyles";
+import { useRouter, Link } from "expo-router";
 import { Colors } from "@/constants/Colors";
-import { loginStyles } from "./styles";
+import { registerStyles } from "./styles";
+import { globalStyles } from "@/constants/GlobalStyles";
 import AuthForm from "../../../../components/authForm/AuthForm";
 import * as CustomSvgs from "../../../../components/svgs/Svgs";
 
-const loginMethods = [
-  {
-    id: 1,
-    name: "Google",
-    src: require("@/assets/images/google.png"),
-  },
-  {
-    id: 2,
-    name: "Facebook",
-    src: require("@/assets/images/facebook.png"),
-  },
-];
-
-export default function Login() {
+export default function Signup() {
   const router = useRouter();
   const screenWidth = Dimensions.get("window").width;
   const colorScheme = useColorScheme();
   const colors = Colors.light;
   // const colors = Colors[colorScheme ?? "light"];
-  const styles = loginStyles(colors);
+  const styles = registerStyles(colors);
 
   const {
     control,
@@ -50,6 +36,10 @@ export default function Login() {
     <View style={styles.container}>
       <CustomSvgs.Wave classname={styles.wave} color={colors.p400} />
 
+      <Pressable onPress={() => router.back()} style={styles.arrowContainer}>
+        <CustomSvgs.BackArrow classname={styles.arrow} color={colors.text_l} />
+      </Pressable>
+
       <Image
         style={styles.image}
         source={require("@/assets/images/mascot.png")}
@@ -61,42 +51,19 @@ export default function Login() {
 
       <AuthForm
         colors={colors}
-        formType="Login"
+        formType="Register"
         control={control}
         errors={errors}
         handleSubmit={handleSubmit(onSubmit)}
       />
 
-      <View style={styles.separator}>
-        <View style={styles.line}></View>
-        <Text style={[globalStyles.text, styles.separatorText]}>ou</Text>
-      </View>
-
-      <View style={styles.methodsContainer}>
-        {loginMethods.map((method) => (
-          <Pressable key={method.id} style={styles.methodBtn}>
-            <Image
-              source={method.src}
-              style={styles.methodBtnIcon}
-              resizeMode="contain"
-              accessibilityLabel={`${method.name} logo`}
-              accessibilityHint={`Sign in with ${method.name}`}
-              accessibilityRole="image"
-            />
-            <Text style={[globalStyles.text, styles.methodBtnText]}>
-              {method.name}
-            </Text>
-          </Pressable>
-        ))}
-      </View>
-
       <Text style={[globalStyles.text, styles.linkText]}>
-        Novo no PocketList?{" "}
+        Já está no PocketList?{" "}
         <Link
-          href="/screens/auth/signup/signup"
+          href="/screens/auth/login/login"
           style={[globalStyles.text, styles.link]}
         >
-          Registe-se aqui
+          Entrar
         </Link>
       </Text>
     </View>

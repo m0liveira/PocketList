@@ -1,17 +1,16 @@
 import { useState, useEffect } from "react";
-import Svg, { Path } from "react-native-svg";
-import { useColorScheme, Text, View, TextInput, Pressable } from "react-native";
+import { Text, View, TextInput, Pressable } from "react-native";
 import { Controller } from "react-hook-form";
-import { Link, useRouter } from "expo-router";
+import { Link } from "expo-router";
 import { formStyles } from "./styles";
 import { globalStyles } from "@/constants/GlobalStyles";
 import * as CustmoSvgs from "../svgs/Svgs";
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+const nameRegex = /^[a-zA-Z\s]{1,16}$/;
 
 export default function AuthForm(props: any) {
-  const router = useRouter();
   const styles = formStyles(props.colors);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -44,7 +43,7 @@ export default function AuthForm(props: any) {
       },
     },
   ];
-  const forgotPasswordInputs = [
+  const ForgotPasswordInputs = [
     {
       svg: (
         <CustmoSvgs.Email classname={styles.svg} color={props.colors.n400} />
@@ -60,15 +59,72 @@ export default function AuthForm(props: any) {
       },
     },
   ];
+  const registerInputs = [
+    {
+      svg: (
+        <CustmoSvgs.Email classname={styles.svg} color={props.colors.n400} />
+      ),
+      name: "email",
+      placeholder: "Ex. pocketList@email.com",
+      rules: {
+        required: "O campo é obrigatório",
+        pattern: {
+          value: emailRegex,
+          message: "O email deve ser válido",
+        },
+      },
+    },
+    {
+      svg: (
+        <CustmoSvgs.UserName classname={styles.svg} color={props.colors.n400} />
+      ),
+      name: "username",
+      placeholder: "Ex. joão Silva",
+      rules: {
+        required: "O campo é obrigatório",
+        pattern: {
+          value: nameRegex,
+          message:
+            "O nome deve ter no máximo 16 caracteres, inclui apenas letras e espaços",
+        },
+      },
+    },
+    {
+      svg: <CustmoSvgs.Lock classname={styles.svg} color={props.colors.n400} />,
+      name: "password",
+      placeholder: "Ex. safePassword123",
+      rules: {
+        required: "O campo é obrigatório",
+        pattern: {
+          value: passwordRegex,
+          message:
+            "A senha deve ter pelo menos 8 caracteres, incluindo letras e números",
+        },
+      },
+    },
+    {
+      svg: <CustmoSvgs.Lock classname={styles.svg} color={props.colors.n400} />,
+      name: "confirmPassword",
+      placeholder: "Confirmar senha",
+      rules: {
+        required: "O campo é obrigatório",
+        pattern: {
+          value: passwordRegex,
+          message:
+            "A senha deve ter pelo menos 8 caracteres, incluindo letras e números",
+        },
+      },
+    },
+  ];
   const [inputDisplay, setInputDisplay] = useState(loginInputs);
 
   useEffect(() => {
     switch (props.formType) {
-      case "forgotPassword":
-        setInputDisplay(forgotPasswordInputs);
+      case "ForgotPassword":
+        setInputDisplay(ForgotPasswordInputs);
         break;
       case "Register":
-        setInputDisplay(loginInputs);
+        setInputDisplay(registerInputs);
         break;
       default:
         setInputDisplay(loginInputs);
@@ -82,7 +138,7 @@ export default function AuthForm(props: any) {
         style={[
           globalStyles.text,
           styles.title,
-          props.formType === "forgotPassword"
+          props.formType === "ForgotPassword"
             ? styles.titleForgotPassword
             : null,
         ]}
@@ -94,7 +150,7 @@ export default function AuthForm(props: any) {
           : "Esqueceu a senha?"}
       </Text>
 
-      {props.formType === "forgotPassword" ? (
+      {props.formType === "ForgotPassword" ? (
         <Text style={[globalStyles.text, styles.subtitle]}>
           Por vezes acontece! Por favor insira o endereço de email associado a
           sua conta.
@@ -121,9 +177,51 @@ export default function AuthForm(props: any) {
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
+                secureTextEntry={
+                  input.name === "password"
+                    ? !showPassword
+                    : input.name === "confirmPassword"
+                    ? !showConfirmPassword
+                    : false
+                }
               />
             )}
           />
+
+          {input.name === "password" || input.name === "confirmPassword" ? (
+            <Pressable
+              style={styles.svgContainer}
+              onPress={() =>
+                input.name === "password"
+                  ? setShowPassword(!showPassword)
+                  : setShowConfirmPassword(!showConfirmPassword)
+              }
+            >
+              {input.name === "password" ? (
+                showPassword ? (
+                  <CustmoSvgs.Eye
+                    classname={styles.svg}
+                    color={props.colors.n400}
+                  />
+                ) : (
+                  <CustmoSvgs.EyeOff
+                    classname={styles.svg}
+                    color={props.colors.n400}
+                  />
+                )
+              ) : showConfirmPassword ? (
+                <CustmoSvgs.Eye
+                  classname={styles.svg}
+                  color={props.colors.n400}
+                />
+              ) : (
+                <CustmoSvgs.EyeOff
+                  classname={styles.svg}
+                  color={props.colors.n400}
+                />
+              )}
+            </Pressable>
+          ) : null}
 
           {props.errors[input.name] ? (
             <Text style={[globalStyles.text, styles.error]}>
@@ -140,6 +238,29 @@ export default function AuthForm(props: any) {
         >
           Esqueceu a senha?
         </Link>
+      ) : props.formType === "Register" ? (
+        <Text
+          style={[
+            globalStyles.text,
+            styles.link,
+            { color: props.colors.n400, width: "100%", marginLeft: 0 },
+          ]}
+        >
+          Ao registar, está a concordar com os nossos{" "}
+          <Link
+            style={[globalStyles.text, styles.link]}
+            href="/screens/auth/login/login"
+          >
+            Termos de serviço
+          </Link>{" "}
+          e{" "}
+          <Link
+            style={[globalStyles.text, styles.link]}
+            href="/screens/auth/login/login"
+          >
+            Politica de privacidade
+          </Link>
+        </Text>
       ) : null}
 
       <Pressable onPress={props.handleSubmit} style={styles.button}>

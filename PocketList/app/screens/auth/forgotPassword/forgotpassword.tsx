@@ -50,7 +50,7 @@ export default function ForgotPassword() {
 
       <AuthForm
         colors={colors}
-        formType="forgotPassword"
+        formType="ForgotPassword"
         control={control}
         errors={errors}
         handleSubmit={handleSubmit(onSubmit)}
