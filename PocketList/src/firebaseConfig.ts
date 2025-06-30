@@ -1,5 +1,6 @@
 import Constants from "expo-constants";
 import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
 import {
   initializeAuth,
   // @ts-ignore
@@ -18,9 +19,10 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 const firebaseAuth = initializeAuth(app, {
   persistence: getReactNativePersistence(AsyncStorage),
 });
 
-export default firebaseAuth;
+export { firebaseAuth, db };

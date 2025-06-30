@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 
-export const loadingStyles = (colors: any) =>
+export const validateStyles = (colors: any) =>
   StyleSheet.create({
     container: {
       position: "absolute",
