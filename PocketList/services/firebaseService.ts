@@ -7,6 +7,7 @@ import {
     deleteUser,
     sendPasswordResetEmail,
     sendEmailVerification,
+    updateProfile,
     signOut,
     User
 } from "firebase/auth";
@@ -38,14 +39,26 @@ export const registerUser = async (data: any) => {
         const userCredential = await createUserWithEmailAndPassword(firebaseAuth, data.email, data.password);
         const user = userCredential.user;
 
+        try {
+            await updateProfile(user, {
+                displayName: data.username,
+                photoURL: '',
+            });
+        } catch (error) {
+            throw new Error("Error updating user profile: " + error);
+        }
+
         const endpoint = doc(db, USERS_COLLECTION, user.uid);
         const date = new Date();
 
         const userData = {
-            photo: '',
-            username: data.username,
             code: await generateUserCode(data.email, data.username, date.toLocaleDateString("pt-PT"), user.uid),
             createdAt: date.toLocaleDateString("pt-PT"),
+            friends: {
+                friends: [],
+                pending: [],
+                blocked: [],
+            },
         };
 
         try {
@@ -84,19 +97,43 @@ export const loginUser = async (email: string, password: string) => {
             }
 
             await logoutUser();
-            return false;
+            return { verified: false, user };
         }
 
-        return { user };
+        let data = {
+            uid: user.uid,
+            email: user.email,
+            emailVerified: user.emailVerified,
+            isAnonymous: user.isAnonymous,
+            providerData: user.providerData,
+            createdAt: user.metadata.creationTime || "",
+            lastLoginAt: user.metadata.lastSignInTime || "",
+            photoURL: user.photoURL,
+            displayName: user.displayName,
+        }
+
+        return data;
     } catch (error) {
         throw error;
     }
 };
 
-export const deleteUserAccount = async (user: User) => {
+export const updateUserProfile = async (updates: { displayName?: string; photoURL?: string }) => {
+    const user = firebaseAuth.currentUser;
+    if (!user) {
+        throw new Error("No authenticated user found.");
+    }
+
+    const updateData: Record<string, string> = {};
+    if (updates.displayName !== undefined) updateData.displayName = updates.displayName;
+    if (updates.photoURL !== undefined) updateData.photoURL = updates.photoURL;
+
+    if (Object.keys(updateData).length === 0) {
+        throw new Error("No update fields provided.");
+    }
+
     try {
-        await deleteUser(user);
-        return true;
+        await updateProfile(user, updateData);
     } catch (error) {
         throw error;
     }
@@ -122,6 +159,15 @@ export const emailVerification = async (user: User) => {
 export const logoutUser = async () => {
     try {
         await signOut(firebaseAuth);
+        return true;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const deleteUserAccount = async (user: User) => {
+    try {
+        await deleteUser(user);
         return true;
     } catch (error) {
         throw error;

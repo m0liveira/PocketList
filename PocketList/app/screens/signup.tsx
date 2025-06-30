@@ -18,6 +18,14 @@ import Loading from "@/components/loading/loading";
 import ValidateEmail from "@/components/validateEmail/validateEmail";
 import * as CustomSvgs from "../../components/svgs/Svgs";
 
+const phrases = [
+  "A criar o teu cantinho...",
+  "A preparar o teu espaço...",
+  "A registar-te nos nossos livros mágicos...",
+  "A organizar a papelada digital...",
+  "Quase lá...",
+];
+
 export default function Signup() {
   const router = useRouter();
   const colorScheme = useColorScheme();
@@ -43,6 +51,10 @@ export default function Signup() {
     required: "O campo é obrigatório",
     validate: (value: any) =>
       value === passwordValue || "As senhas não coincidem",
+  };
+
+  const handleValidating = () => {
+    setIsValidating(!isValidating);
   };
 
   const onSubmit = async (data: any) => {
@@ -105,10 +117,15 @@ export default function Signup() {
         </View>
       ) : null}
 
-      {isLoading ? <Loading colors={colors} /> : null}
+      {isLoading ? <Loading colors={colors} phrases={phrases} /> : null}
 
       {isValidating ? (
-        <ValidateEmail colors={colors} email={emailValue} user={user} />
+        <ValidateEmail
+          colors={colors}
+          email={emailValue}
+          user={user}
+          validating={handleValidating}
+        />
       ) : null}
     </>
   );

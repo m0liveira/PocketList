@@ -24,7 +24,7 @@ export default function ValidateEmail(props: any) {
     if (isLoading) return;
 
     setIsLoading(true);
-    
+
     try {
       await emailVerification(props.user);
       setIsLoading(false);
@@ -82,7 +82,11 @@ export default function ValidateEmail(props: any) {
         Email errado? Lamentamos, mas terá de criar uma nova conta.
       </Text>
 
-      <Link href={"screens/login"} style={[globalStyles.text, styles.linkBtn]}>
+      <Link
+        href={"screens/login"}
+        style={[globalStyles.text, styles.linkBtn]}
+        onPress={props.validating}
+      >
         Voltar para o login
       </Link>
     </View>

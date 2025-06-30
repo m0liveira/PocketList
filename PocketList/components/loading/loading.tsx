@@ -3,14 +3,6 @@ import { Text, View, Animated } from "react-native";
 import { loadingStyles } from "./styles";
 import { globalStyles } from "@/constants/GlobalStyles";
 
-const phrases = [
-  "A criar o teu cantinho...",
-  "A preparar o teu espaço...",
-  "A registar-te nos nossos livros mágicos...",
-  "A organizar a papelada digital...",
-  "Quase lá...",
-];
-
 export default function Loading(props: any) {
   const styles = loadingStyles(props.colors);
 
@@ -37,7 +29,7 @@ export default function Loading(props: any) {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setPhraseIndex((prev) => (prev + 1) % phrases.length);
+      setPhraseIndex((prev) => (prev + 1) % props.phrases.length);
     }, 3000);
     return () => clearInterval(interval);
   }, []);
@@ -53,7 +45,7 @@ export default function Loading(props: any) {
         style={[styles.image, { transform: [{ scale: scaleAnim }] }]}
       />
       <Text style={[globalStyles.text, styles.text]}>
-        {phrases[phraseIndex]}
+        {props.phrases[phraseIndex]}
       </Text>
     </View>
   );

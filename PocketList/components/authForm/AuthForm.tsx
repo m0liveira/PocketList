@@ -55,11 +55,6 @@ export default function AuthForm(props: any) {
         textContentType: "password",
         rules: {
           required: "O campo senha é obrigatório",
-          pattern: {
-            value: passwordRegex,
-            message:
-              "A senha deve ter pelo menos 8 caracteres, incluindo letras e números",
-          },
         },
       },
     ];
@@ -213,7 +208,54 @@ export default function AuthForm(props: any) {
           placeholder: string;
           keyboardType: KeyboardTypeOptions | undefined;
           autoCapitalize: "none" | "words" | "sentences" | "characters";
-          textContentType: "none" | "name" | "password" | "URL" | "addressCity" | "addressCityAndState" | "addressState" | "countryName" | "creditCardNumber" | "creditCardExpiration" | "creditCardExpirationMonth" | "creditCardExpirationYear" | "creditCardSecurityCode" | "creditCardType" | "creditCardName" | "creditCardGivenName" | "creditCardMiddleName" | "creditCardFamilyName" | "emailAddress" | "familyName" | "fullStreetAddress" | "givenName" | "jobTitle" | "location" | "middleName" | "namePrefix" | "nameSuffix" | "nickname" | "organizationName" | "postalCode" | "streetAddressLine1" | "streetAddressLine2" | "sublocality" | "telephoneNumber" | "username" | "newPassword" | "oneTimeCode" | "birthdate" | "birthdateDay" | "birthdateMonth" | "birthdateYear" | "cellularEID" | "cellularIMEI" | "dateTime" | "flightNumber" | "shipmentTrackingNumber" | undefined;
+          textContentType:
+            | "none"
+            | "name"
+            | "password"
+            | "URL"
+            | "addressCity"
+            | "addressCityAndState"
+            | "addressState"
+            | "countryName"
+            | "creditCardNumber"
+            | "creditCardExpiration"
+            | "creditCardExpirationMonth"
+            | "creditCardExpirationYear"
+            | "creditCardSecurityCode"
+            | "creditCardType"
+            | "creditCardName"
+            | "creditCardGivenName"
+            | "creditCardMiddleName"
+            | "creditCardFamilyName"
+            | "emailAddress"
+            | "familyName"
+            | "fullStreetAddress"
+            | "givenName"
+            | "jobTitle"
+            | "location"
+            | "middleName"
+            | "namePrefix"
+            | "nameSuffix"
+            | "nickname"
+            | "organizationName"
+            | "postalCode"
+            | "streetAddressLine1"
+            | "streetAddressLine2"
+            | "sublocality"
+            | "telephoneNumber"
+            | "username"
+            | "newPassword"
+            | "oneTimeCode"
+            | "birthdate"
+            | "birthdateDay"
+            | "birthdateMonth"
+            | "birthdateYear"
+            | "cellularEID"
+            | "cellularIMEI"
+            | "dateTime"
+            | "flightNumber"
+            | "shipmentTrackingNumber"
+            | undefined;
         }[]
       ).map((input, index) => (
         <View key={index} style={styles.inputContainer}>
