@@ -33,6 +33,9 @@ export default function Signup() {
   } = useForm();
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isValidating, setIsValidating] = useState(false);
+  const emailValue = watch("email");
+  const [user, setUser] = useState();
 
   const passwordValue = watch("password");
 
@@ -46,8 +49,9 @@ export default function Signup() {
     setIsLoading(true);
     try {
       const result = await registerUser(data);
-
-      router.push("/screens/login");
+      setUser(result.user as any);
+      setIsValidating(true);
+      setIsLoading(false);
     } catch (error: any) {
       Alert.alert("Registration Failed", error.message || "Unknown error");
     } finally {
@@ -57,45 +61,55 @@ export default function Signup() {
 
   return (
     <>
-      <View style={styles.container}>
-        <CustomSvgs.Wave classname={styles.wave} color={colors.p400} />
+      {!isValidating ? (
+        <View style={styles.container}>
+          <CustomSvgs.Wave classname={styles.wave} color={colors.p400} />
 
-        <Pressable onPress={() => router.back()} style={styles.arrowContainer}>
-          <CustomSvgs.BackArrow
-            classname={styles.arrow}
-            color={colors.text_l}
+          <Pressable
+            onPress={() => router.back()}
+            style={styles.arrowContainer}
+          >
+            <CustomSvgs.BackArrow
+              classname={styles.arrow}
+              color={colors.text_l}
+            />
+          </Pressable>
+
+          <Image
+            style={styles.image}
+            source={require("@/assets/images/mascot.png")}
+            resizeMode="contain"
+            accessibilityLabel={"PocketList Mascot"}
+            accessibilityHint={"A friendly mascot representing PocketList"}
+            accessibilityRole="image"
           />
-        </Pressable>
 
-        <Image
-          style={styles.image}
-          source={require("@/assets/images/mascot.png")}
-          resizeMode="contain"
-          accessibilityLabel={"PocketList Mascot"}
-          accessibilityHint={"A friendly mascot representing PocketList"}
-          accessibilityRole="image"
-        />
+          <AuthForm
+            colors={colors}
+            formType="Register"
+            control={control}
+            errors={errors}
+            handleSubmit={handleSubmit(onSubmit)}
+            isLoading={isLoading}
+          />
 
-        <AuthForm
-          colors={colors}
-          formType="Register"
-          control={control}
-          errors={errors}
-          handleSubmit={handleSubmit(onSubmit)}
-          isLoading={isLoading}
-        />
-
-        <Text style={[globalStyles.text, styles.linkText]}>
-          Já está no PocketList?{" "}
-          <Link href="/screens/login" style={[globalStyles.text, styles.link]}>
-            Entrar
-          </Link>
-        </Text>
-      </View>
+          <Text style={[globalStyles.text, styles.linkText]}>
+            Já está no PocketList?{" "}
+            <Link
+              href="/screens/login"
+              style={[globalStyles.text, styles.link]}
+            >
+              Entrar
+            </Link>
+          </Text>
+        </View>
+      ) : null}
 
       {isLoading ? <Loading colors={colors} /> : null}
 
-      <ValidateEmail colors={colors} />
+      {isValidating ? (
+        <ValidateEmail colors={colors} email={emailValue} user={user} />
+      ) : null}
     </>
   );
 }

@@ -1,5 +1,11 @@
 import { useState, useEffect } from "react";
-import { Text, View, TextInput, Pressable } from "react-native";
+import {
+  Text,
+  View,
+  TextInput,
+  Pressable,
+  KeyboardTypeOptions,
+} from "react-native";
 import { Controller } from "react-hook-form";
 import { Link } from "expo-router";
 import { formStyles } from "./styles";
@@ -14,124 +20,162 @@ export default function AuthForm(props: any) {
   const styles = formStyles(props.colors);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const loginInputs = [
-    {
-      svg: (
-        <CustmoSvgs.Email classname={styles.svg} color={props.colors.n400} />
-      ),
-      name: "email",
-      placeholder: "Ex. pocketList@email.com",
-      rules: {
-        required: "O campo é obrigatório",
-        pattern: {
-          value: emailRegex,
-          message: "O email deve ser válido",
-        },
-      },
-    },
-    {
-      svg: <CustmoSvgs.Lock classname={styles.svg} color={props.colors.n400} />,
-      name: "password",
-      placeholder: "Ex. safePassword123",
-      rules: {
-        required: "O campo senha é obrigatório",
-        pattern: {
-          value: passwordRegex,
-          message:
-            "A senha deve ter pelo menos 8 caracteres, incluindo letras e números",
-        },
-      },
-    },
-  ];
-  const ForgotPasswordInputs = [
-    {
-      svg: (
-        <CustmoSvgs.Email classname={styles.svg} color={props.colors.n400} />
-      ),
-      name: "email",
-      placeholder: "Ex. pocketList@email.com",
-      rules: {
-        required: "O campo é obrigatório",
-        pattern: {
-          value: emailRegex,
-          message: "O email deve ser válido",
-        },
-      },
-    },
-  ];
-  const registerInputs = [
-    {
-      svg: (
-        <CustmoSvgs.Email classname={styles.svg} color={props.colors.n400} />
-      ),
-      name: "email",
-      placeholder: "Ex. pocketList@email.com",
-      rules: {
-        required: "O campo é obrigatório",
-        pattern: {
-          value: emailRegex,
-          message: "O email deve ser válido",
-        },
-      },
-    },
-    {
-      svg: (
-        <CustmoSvgs.UserName classname={styles.svg} color={props.colors.n400} />
-      ),
-      name: "username",
-      placeholder: "Ex. joão Silva",
-      rules: {
-        required: "O campo é obrigatório",
-        pattern: {
-          value: nameRegex,
-          message:
-            "O nome deve ter no máximo 16 caracteres, inclui apenas letras e espaços",
-        },
-      },
-    },
-    {
-      svg: <CustmoSvgs.Lock classname={styles.svg} color={props.colors.n400} />,
-      name: "password",
-      placeholder: "Ex. safePassword123",
-      rules: {
-        required: "O campo é obrigatório",
-        pattern: {
-          value: passwordRegex,
-          message:
-            "A senha deve ter pelo menos 8 caracteres, incluindo letras e números",
-        },
-      },
-    },
-    {
-      svg: <CustmoSvgs.Lock classname={styles.svg} color={props.colors.n400} />,
-      name: "confirmPassword",
-      placeholder: "Confirmar senha",
-      rules: {
-        required: "O campo é obrigatório",
-        pattern: {
-          value: passwordRegex,
-          message:
-            "A senha deve ter pelo menos 8 caracteres, incluindo letras e números",
-        },
-        validate: (value: any, formValues: { password: any }) =>
-          value === formValues.password || "As senhas não coincidem",
-      },
-    },
-  ];
-  const [inputDisplay, setInputDisplay] = useState(loginInputs);
+
+  const [inputDisplay, setInputDisplay] = useState([]);
 
   useEffect(() => {
+    let updatedInputs;
+
+    const loginInputs = [
+      {
+        svg: (
+          <CustmoSvgs.Email classname={styles.svg} color={props.colors.n400} />
+        ),
+        name: "email",
+        placeholder: "Ex. pocketList@email.com",
+        keyboardType: "email-address",
+        autoCapitalize: "none",
+        textContentType: "emailAddress",
+        rules: {
+          required: "O campo é obrigatório",
+          pattern: {
+            value: emailRegex,
+            message: "O email deve ser válido",
+          },
+        },
+      },
+      {
+        svg: (
+          <CustmoSvgs.Lock classname={styles.svg} color={props.colors.n400} />
+        ),
+        name: "password",
+        placeholder: "Ex. safePassword123",
+        keyboardType: "default",
+        autoCapitalize: "none",
+        textContentType: "password",
+        rules: {
+          required: "O campo senha é obrigatório",
+          pattern: {
+            value: passwordRegex,
+            message:
+              "A senha deve ter pelo menos 8 caracteres, incluindo letras e números",
+          },
+        },
+      },
+    ];
+
+    const forgotPasswordInputs = [
+      {
+        svg: (
+          <CustmoSvgs.Email classname={styles.svg} color={props.colors.n400} />
+        ),
+        name: "email",
+        placeholder: "Ex. pocketList@email.com",
+        keyboardType: "email-address",
+        autoCapitalize: "none",
+        textContentType: "emailAddress",
+        rules: {
+          required: "O campo é obrigatório",
+          pattern: {
+            value: emailRegex,
+            message: "O email deve ser válido",
+          },
+        },
+      },
+    ];
+
+    const registerInputs = [
+      {
+        svg: (
+          <CustmoSvgs.Email classname={styles.svg} color={props.colors.n400} />
+        ),
+        name: "email",
+        placeholder: "Ex. pocketList@email.com",
+        keyboardType: "email-address",
+        autoCapitalize: "none",
+        textContentType: "emailAddress",
+        rules: {
+          required: "O campo é obrigatório",
+          pattern: {
+            value: emailRegex,
+            message: "O email deve ser válido",
+          },
+        },
+      },
+      {
+        svg: (
+          <CustmoSvgs.UserName
+            classname={styles.svg}
+            color={props.colors.n400}
+          />
+        ),
+        name: "username",
+        placeholder: "Ex. joão Silva",
+        keyboardType: "default",
+        autoCapitalize: "none",
+        textContentType: "name",
+        rules: {
+          required: "O campo é obrigatório",
+          pattern: {
+            value: nameRegex,
+            message:
+              "O nome deve ter no máximo 16 caracteres, inclui apenas letras e espaços",
+          },
+        },
+      },
+      {
+        svg: (
+          <CustmoSvgs.Lock classname={styles.svg} color={props.colors.n400} />
+        ),
+        name: "password",
+        placeholder: "Ex. safePassword123",
+        keyboardType: "default",
+        autoCapitalize: "none",
+        textContentType: "password",
+        rules: {
+          required: "O campo é obrigatório",
+          pattern: {
+            value: passwordRegex,
+            message:
+              "A senha deve ter pelo menos 8 caracteres, incluindo letras e números",
+          },
+        },
+      },
+      {
+        svg: (
+          <CustmoSvgs.Lock classname={styles.svg} color={props.colors.n400} />
+        ),
+        name: "confirmPassword",
+        placeholder: "Confirmar senha",
+        keyboardType: "default",
+        autoCapitalize: "none",
+        textContentType: "password",
+        rules: {
+          required: "O campo é obrigatório",
+          pattern: {
+            value: passwordRegex,
+            message:
+              "A senha deve ter pelo menos 8 caracteres, incluindo letras e números",
+          },
+          validate: (value: any, formValues: { password: any }) =>
+            value === formValues.password || "As senhas não coincidem",
+        },
+      },
+    ];
+
     switch (props.formType) {
-      case "ForgotPassword":
-        setInputDisplay(ForgotPasswordInputs as typeof loginInputs);
+      case "Login":
+        updatedInputs = loginInputs;
         break;
       case "Register":
-        setInputDisplay(registerInputs as typeof loginInputs);
+        updatedInputs = registerInputs;
         break;
       default:
-        setInputDisplay(loginInputs);
+        updatedInputs = forgotPasswordInputs;
         break;
     }
+
+    setInputDisplay(updatedInputs as any);
   }, [props.formType]);
 
   return (
@@ -149,6 +193,8 @@ export default function AuthForm(props: any) {
           ? "Entrar"
           : props.formType === "Register"
           ? "Registar"
+          : props.formType === "Validate"
+          ? "Verificar Email"
           : "Esqueceu a senha?"}
       </Text>
 
@@ -159,7 +205,17 @@ export default function AuthForm(props: any) {
         </Text>
       ) : null}
 
-      {inputDisplay.map((input, index) => (
+      {(
+        inputDisplay as {
+          svg: React.ReactNode;
+          name: string;
+          rules: object;
+          placeholder: string;
+          keyboardType: KeyboardTypeOptions | undefined;
+          autoCapitalize: "none" | "words" | "sentences" | "characters";
+          textContentType: "none" | "name" | "password" | "URL" | "addressCity" | "addressCityAndState" | "addressState" | "countryName" | "creditCardNumber" | "creditCardExpiration" | "creditCardExpirationMonth" | "creditCardExpirationYear" | "creditCardSecurityCode" | "creditCardType" | "creditCardName" | "creditCardGivenName" | "creditCardMiddleName" | "creditCardFamilyName" | "emailAddress" | "familyName" | "fullStreetAddress" | "givenName" | "jobTitle" | "location" | "middleName" | "namePrefix" | "nameSuffix" | "nickname" | "organizationName" | "postalCode" | "streetAddressLine1" | "streetAddressLine2" | "sublocality" | "telephoneNumber" | "username" | "newPassword" | "oneTimeCode" | "birthdate" | "birthdateDay" | "birthdateMonth" | "birthdateYear" | "cellularEID" | "cellularIMEI" | "dateTime" | "flightNumber" | "shipmentTrackingNumber" | undefined;
+        }[]
+      ).map((input, index) => (
         <View key={index} style={styles.inputContainer}>
           {input.svg}
 
@@ -176,6 +232,9 @@ export default function AuthForm(props: any) {
                 ]}
                 placeholder={input.placeholder}
                 placeholderTextColor={props.colors.n300}
+                keyboardType={input.keyboardType}
+                autoCapitalize={input.autoCapitalize}
+                textContentType={input.textContentType}
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}

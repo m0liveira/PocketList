@@ -52,7 +52,7 @@ export const registerUser = async (data: any) => {
             await setFirestoreData(userData, endpoint);
 
             try {
-                await sendEmailVerification(user);
+                await emailVerification(user);
             } catch (emailError) {
                 throw emailError;
             }
@@ -78,7 +78,7 @@ export const loginUser = async (email: string, password: string) => {
 
         if (!user.emailVerified) {
             try {
-                await sendEmailVerification(user);
+                await emailVerification(user);
             } catch (emailError) {
                 throw emailError;
             }
@@ -113,7 +113,7 @@ export const resetPassword = async (email: string) => {
 
 export const emailVerification = async (user: User) => {
     try {
-        await emailVerification(user);
+        await sendEmailVerification(user);
     } catch (error) {
         throw error;
     }

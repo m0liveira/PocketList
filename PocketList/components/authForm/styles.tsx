@@ -16,7 +16,7 @@ export const formStyles = (colors: any) =>
       marginBottom: 30,
     },
     subtitle: {
-      color: colors.n300,
+      color: colors.n400,
       fontSize: 16,
       marginBottom: 60,
     },
@@ -30,9 +30,9 @@ export const formStyles = (colors: any) =>
       height: 70,
       marginBottom: 5,
     },
-    svgContainer:{
+    svgContainer: {
       position: "absolute",
-      top: '15%',
+      top: "15%",
       right: 0,
       zIndex: 1,
     },
