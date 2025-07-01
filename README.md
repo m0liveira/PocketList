@@ -7,8 +7,6 @@
 [![MIT License][license-shield]][license-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
 
-
-
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
@@ -32,8 +30,6 @@
   </p>
 </div>
 
-
-
 <!-- TABLE OF CONTENTS -->
 <details>
   <summary>Table of Contents</summary>
@@ -53,9 +49,8 @@
   </ol>
 </details>
 
-
-
 <!-- ABOUT THE PROJECT -->
+
 ## About The Project
 
 [![Product Name Screen Shot][product-screenshot]](https://example.com)
@@ -80,8 +75,6 @@ PocketList’s goal is to make everyday planning a breeze, whether you’re shop
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 ### Built With
 
 [![React Native][React Native]][ReactNative-url]
@@ -91,9 +84,8 @@ PocketList’s goal is to make everyday planning a breeze, whether you’re shop
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 <!-- USAGE EXAMPLES -->
+
 ## Usage
 
 <!-- Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
@@ -102,35 +94,39 @@ _For more examples, please refer to the [Documentation](https://example.com)_ --
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 <!-- ROADMAP -->
+
 ## Roadmap
 
 - [x] Signup screen
-    - [x] Create accounts with firebase Auth
-    - [x] Create default user data on firebase Firestore
-    - [x] Send and verify user emails
-    - [x] Handle previous points on failure
+  - [x] Create accounts with firebase Auth
+  - [x] Create default user data on firebase Firestore
+  - [x] Send and verify user emails
+  - [x] Handle previous points on failure
 - [ ] Signin screen
-    - [ ] Signin users with firebase Auth
-        - [x] Signin users via email/password
-        - [ ] Signin/signup users via google
-        - [ ] Signin/signup users via facebook
-    - [x] Prevent unverified users to Signin until email is verified
-    - [ ] Handle previous points on failure
-    - [x] Store user data on a service
+  - [ ] Signin users with firebase Auth
+    - [x] Signin users via email/password
+    - [ ] Signin/signup users via google
+    - [ ] Signin/signup users via facebook
+  - [x] Prevent unverified users to Signin until email is verified
+  - [ ] Handle previous points on failure
+  - [x] Store user data on a service
 - [x] Recover user passwords
-    - [x] Send recover password email
-    - [x] Handle previous points on failure
+  - [x] Send recover password email
+  - [x] Handle previous points on failure
+- [ ] Home screen
+  - [ ] Show user data
+  - [ ] Show user lists
+- [ ] Features
+  - [x] Keep user logged in on app restart
+  - [x] keep user out of auth screens when loggedd in
 
 See the [open issues](https://github.com/m0liveira/PocketList/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 <!-- CONTRIBUTING -->
+
 ## Contributors
 
 <a href="https://github.com/m0liveira/PocketList/graphs/contributors">
@@ -139,18 +135,16 @@ See the [open issues](https://github.com/m0liveira/PocketList/issues) for a full
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 <!-- LICENSE -->
+
 ## License
 
 Distributed under the Unlicense License. See `LICENSE.txt` for more information.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 <!-- CONTACT -->
+
 ## Contact
 
 Mateus Oliveira - [website](https://mateusoliveira.me) - moliveira.developer@gmail.com
@@ -159,10 +153,9 @@ Project Link: [https://github.com/m0liveira/PocketList](https://github.com/m0liv
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- Github related -->
+
 [contributors-shield]: https://img.shields.io/github/contributors/m0liveira/PocketList.svg?style=for-the-badge
 [contributors-url]: https://github.com/m0liveira/PocketList/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/m0liveira/PocketList.svg?style=for-the-badge
@@ -177,6 +170,7 @@ Project Link: [https://github.com/m0liveira/PocketList](https://github.com/m0liv
 [linkedin-url]: https://www.linkedin.com/in/mateus-oliveira-271121194/
 
 <!-- Tecnologies -->
+
 [React Native]: https://img.shields.io/badge/React_Native-%2320232a.svg?logo=react&logoColor=%2361DAFB
 [ReactNative-url]: https://reactnative.dev
 [Expo]: https://img.shields.io/badge/Expo-000020?logo=expo&logoColor=fff
@@ -187,4 +181,5 @@ Project Link: [https://github.com/m0liveira/PocketList](https://github.com/m0liv
 [Figma-url]: https://figma.com
 
 <!-- Images -->
+
 [product-screenshot]: images/screenshot.png

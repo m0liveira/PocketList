@@ -13,10 +13,11 @@ import {
     signOut,
     User,
 } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc } from "firebase/firestore";
+import { getUserData } from "./userService";
 
 // ENDPOINTS
-const USERS_COLLECTION = "users";
+const USERS_COLLECTION_REF = "users";
 
 // UTILITY FUNCTIONS
 
@@ -36,6 +37,31 @@ async function generateUserCode(email: string, username: string, createdAt: stri
 
 // AUTH FUNCTIONS
 
+export const getUser = async (user: any) => {
+    const endpoint = doc(db, USERS_COLLECTION_REF, user.uid);
+    let result = null;
+
+    try {
+        result = await getFirestoreData(endpoint);
+    } catch (error) {
+        throw error;
+    }
+
+    let data = {
+        uid: user.uid,
+        email: user.email,
+        emailVerified: user.emailVerified,
+        isAnonymous: user.isAnonymous,
+        providerData: user.providerData,
+        createdAt: user.metadata.creationTime || "",
+        lastLoginAt: user.metadata.lastSignInTime || "",
+        photoURL: user.photoURL,
+        displayName: user.displayName,
+        firestoreData: result,
+    }
+    return data;
+};
+
 export const registerUser = async (data: any) => {
     try {
         const userCredential = await createUserWithEmailAndPassword(firebaseAuth, data.email, data.password);
@@ -50,7 +76,7 @@ export const registerUser = async (data: any) => {
             throw new Error("Error updating user profile: " + error);
         }
 
-        const endpoint = doc(db, USERS_COLLECTION, user.uid);
+        const endpoint = doc(db, USERS_COLLECTION_REF, user.uid);
         const date = new Date();
 
         const userData = {
@@ -102,19 +128,7 @@ export const loginUser = async (email: string, password: string) => {
             return { verified: false, user };
         }
 
-        let data = {
-            uid: user.uid,
-            email: user.email,
-            emailVerified: user.emailVerified,
-            isAnonymous: user.isAnonymous,
-            providerData: user.providerData,
-            createdAt: user.metadata.creationTime || "",
-            lastLoginAt: user.metadata.lastSignInTime || "",
-            photoURL: user.photoURL,
-            displayName: user.displayName,
-        }
-
-        return data;
+        return getUser(user);
     } catch (error) {
         throw error;
     }
@@ -202,6 +216,20 @@ export const setFirestoreData = async (data: any, endpoint: any) => {
     try {
         const result = await setDoc(endpoint, data, { merge: true });
         return result;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const getFirestoreData = async (endpoint: any) => {
+    try {
+        const docSnap = await getDoc(endpoint);
+
+        if (docSnap.exists()) {
+            return docSnap.data();
+        } else {
+            throw new Error("Documento não encontrado");
+        }
     } catch (error) {
         throw error;
     }

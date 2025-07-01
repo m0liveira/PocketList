@@ -7,11 +7,16 @@ import {
   View,
   Pressable,
 } from "react-native";
-import { Link, useRouter } from "expo-router";
-import Svg, { Path } from "react-native-svg";
-import { globalStyles } from "@/constants/GlobalStyles";
+import { useRouter, router } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+// Styles
 import { Colors } from "@/constants/Colors";
+import { globalStyles } from "@/constants/GlobalStyles";
 import { introStyles } from "@/src/styles/intro/styles";
+
+// Components
+import Svg, { Path } from "react-native-svg";
 
 export default function Intro() {
   const router = useRouter();
@@ -68,9 +73,14 @@ export default function Intro() {
     }).start();
   }, [index, scaleAnim]);
 
+  const finishIntro = async () => {
+    await AsyncStorage.setItem("@has_seen_intro", "true");
+    router.replace("/screens/login");
+  };
+
   const handleNext = () => {
     if (index === display.length - 1) {
-      router.replace("/screens/login");
+      finishIntro();
       return;
     }
 
@@ -123,12 +133,9 @@ export default function Intro() {
           />
         ))}
 
-        <Link
-          style={[globalStyles.text, styles.link]}
-          href="/screens/login"
-        >
+        <Text style={[globalStyles.text, styles.link]} onPress={finishIntro}>
           Saltar
-        </Link>
+        </Text>
       </View>
 
       <WaveSvg styles={styles} colors={colors} />
