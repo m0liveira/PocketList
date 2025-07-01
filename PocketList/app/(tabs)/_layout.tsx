@@ -1,45 +1,104 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
-import { Platform } from 'react-native';
+import { Tabs } from "expo-router";
+import React from "react";
 
-import { HapticTab } from '@/components/HapticTab';
-import { IconSymbol } from '@/components/ui/IconSymbol';
-import TabBarBackground from '@/components/ui/TabBarBackground';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+import {
+  DarkTheme,
+  DefaultTheme,
+  ThemeProvider,
+} from "@react-navigation/native";
+
+// Styles
+import { Colors } from "@/constants/Colors";
+import { globalStyles } from "@/constants/GlobalStyles";
+import { useFonts } from "expo-font";
+import "react-native-reanimated";
+import { useColorScheme } from "@/hooks/useColorScheme";
+
+// Components
+import * as SVGS from "@/components/svgs/Svgs";
+import { HapticTab } from "@/components/HapticTab";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const colors = Colors.light;
+  // const colors = Colors[colorScheme ?? "light"];
+
+  const [loaded] = useFonts({
+    AdlamDisplay: require("../../assets/fonts/ADLaMDisplay-Regular.ttf"),
+  });
+
+  if (!loaded) {
+    return null;
+  }
 
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-        tabBarButton: HapticTab,
-        tabBarBackground: TabBarBackground,
-        tabBarStyle: Platform.select({
-          ios: {
-            // Use a transparent background on iOS to show the blur effect
-            position: 'absolute',
+    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+      <Tabs
+        screenOptions={{
+          tabBarInactiveTintColor: colors.n400,
+          tabBarActiveTintColor: colors.p400,
+          headerShown: false,
+          animation: "fade",
+          tabBarButton: HapticTab,
+          tabBarStyle: {
+            position: "absolute",
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: colors.bg400,
+            borderTopWidth: 0,
+            borderColor: "none",
+            borderTopStartRadius: 12,
+            borderTopEndRadius: 12,
+            boxShadow: colors.navShadow,
+            height: 85,
+            paddingBottom: 16,
+            paddingTop: 8,
+            paddingHorizontal: 12,
           },
-          default: {},
-        }),
-      }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          tabBarLabelStyle: {
+            fontFamily: "AdlamDisplay",
+            fontSize: 10,
+            fontWeight: "bold",
+            textAlign: "center",
+          },
+          tabBarIconStyle: {
+            marginBottom: 3,
+          },
         }}
-      />
-      <Tabs.Screen
-        name="explore"
-        options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
-        }}
-      />
-    </Tabs>
+      >
+        <Tabs.Screen
+          name="home"
+          options={{
+            title: "Listas",
+            tabBarIcon: ({ color }) => <SVGS.Home color={color} />,
+          }}
+        />
+
+        <Tabs.Screen
+          name="wishlist"
+          options={{
+            title: "Desejos",
+            tabBarIcon: ({ color }) => <SVGS.Wishlist color={color} />,
+          }}
+        />
+
+        <Tabs.Screen
+          name="recipes"
+          options={{
+            title: "Receitas",
+            tabBarIcon: ({ color }) => <SVGS.Recipes color={color} />,
+          }}
+        />
+
+        <Tabs.Screen
+          name="profile"
+          options={{
+            title: "Perfil",
+            tabBarIcon: ({ color }) => <SVGS.Profile color={color} />,
+          }}
+        />
+      </Tabs>
+    </ThemeProvider>
   );
 }

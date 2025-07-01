@@ -7,7 +7,7 @@ import { setUserData } from "@/services/userService";
 import { getUser } from "@/services/firebaseService";
 
 export const useInitialRedirect = () => {
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const checkIntroAndAuth = async () => {
@@ -16,25 +16,24 @@ export const useInitialRedirect = () => {
 
                 if (!hasSeenIntro) {
                     router.replace("/screens/intro");
+                    setLoading(false);
                     return;
                 }
-
-                setLoading(true);
 
                 const unsubscribe = onAuthStateChanged(firebaseAuth, async (user) => {
                     if (user) {
                         setUserData(await getUser(user));
-                        router.replace("/screens/home");
+                        router.replace("/(tabs)/home");
                     } else {
                         router.replace("/screens/login");
                     }
+                    setLoading(false);
                 });
 
                 return unsubscribe;
             } catch (error) {
                 console.error("Redirection error:", error);
                 router.replace("/screens/login");
-            } finally {
                 setLoading(false);
             }
         };

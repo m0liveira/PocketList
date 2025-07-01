@@ -126,7 +126,7 @@ export default function Login() {
 
       setUserData(result);
       setIsLoading(false);
-      router.replace("screens/home");
+      router.replace("/(tabs)/home");
     } catch (error: any) {
       const genericMessage = "Credenciais inválidas.";
 
