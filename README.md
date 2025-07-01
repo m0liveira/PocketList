@@ -120,9 +120,9 @@ _For more examples, please refer to the [Documentation](https://example.com)_ --
     - [x] Prevent unverified users to Signin until email is verified
     - [ ] Handle previous points on failure
     - [x] Store user data on a service
-- [ ] Recover user passwords
-    - [ ] Send recover password email
-    - [ ] Handle previous points on failure
+- [x] Recover user passwords
+    - [x] Send recover password email
+    - [x] Handle previous points on failure
 
 See the [open issues](https://github.com/m0liveira/PocketList/issues) for a full list of proposed features (and known issues).
 

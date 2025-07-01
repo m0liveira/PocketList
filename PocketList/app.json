@@ -2,6 +2,7 @@
   "expo": {
     "name": "PocketList",
     "slug": "PocketList",
+    "owner": "moliveiraa",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",

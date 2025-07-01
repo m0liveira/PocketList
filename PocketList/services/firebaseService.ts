@@ -1,15 +1,17 @@
+import { firebaseAuth, db } from "@/src/firebaseConfig";
 import * as ExpoCrypto from "expo-crypto";
 import { sha256 } from "js-sha256";
-import { firebaseAuth, db } from "@/src/firebaseConfig";
 import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
+    signInWithCredential,
+    GoogleAuthProvider,
     deleteUser,
     sendPasswordResetEmail,
     sendEmailVerification,
     updateProfile,
     signOut,
-    User
+    User,
 } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 
@@ -118,6 +120,26 @@ export const loginUser = async (email: string, password: string) => {
     }
 };
 
+export const signInWithGoogle = async (idToken: string) => {
+    try {
+        const credential = GoogleAuthProvider.credential(idToken);
+        const userCredential = await signInWithCredential(firebaseAuth, credential);
+        const user = userCredential.user;
+
+        // If it's a new user, you may want to initialize their Firestore data here
+
+        // if (!user.emailVerified) {
+        //     await emailVerification(user);
+        //     await logoutUser();
+        //     return { verified: false, user };
+        // }
+
+        return { user };
+    } catch (error) {
+        throw error;
+    }
+};
+
 export const updateUserProfile = async (updates: { displayName?: string; photoURL?: string }) => {
     const user = firebaseAuth.currentUser;
     if (!user) {
@@ -139,9 +161,18 @@ export const updateUserProfile = async (updates: { displayName?: string; photoUR
     }
 };
 
-export const resetPassword = async (email: string) => {
+export const logoutUser = async () => {
     try {
-        await sendPasswordResetEmail(firebaseAuth, email);
+        await signOut(firebaseAuth);
+        return true;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const deleteUserAccount = async (user: User) => {
+    try {
+        await deleteUser(user);
         return true;
     } catch (error) {
         throw error;
@@ -156,18 +187,9 @@ export const emailVerification = async (user: User) => {
     }
 };
 
-export const logoutUser = async () => {
+export const resetPassword = async (email: string) => {
     try {
-        await signOut(firebaseAuth);
-        return true;
-    } catch (error) {
-        throw error;
-    }
-};
-
-export const deleteUserAccount = async (user: User) => {
-    try {
-        await deleteUser(user);
+        await sendPasswordResetEmail(firebaseAuth, email);
         return true;
     } catch (error) {
         throw error;

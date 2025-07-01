@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   useColorScheme,
   Text,
@@ -9,6 +9,8 @@ import {
 } from "react-native";
 import { useForm } from "react-hook-form";
 import { Link, useRouter } from "expo-router";
+import * as Google from "expo-auth-session/providers/google";
+import * as AuthSession from "expo-auth-session";
 
 // Styles
 import { globalStyles } from "@/constants/GlobalStyles";
@@ -16,7 +18,7 @@ import { Colors } from "@/constants/Colors";
 import { loginStyles } from "@/src/styles/login/styles";
 
 // Services
-import { loginUser } from "@/services/firebaseService";
+import { loginUser, signInWithGoogle } from "@/services/firebaseService";
 import { setUserData, getUserData } from "@/services/userService";
 
 // Components
@@ -25,25 +27,17 @@ import Loading from "@/components/loading/loading";
 import ValidateEmail from "@/components/validateEmail/validateEmail";
 import * as CustomSvgs from "../../components/svgs/Svgs";
 
-const loginMethods = [
-  {
-    id: 1,
-    name: "Google",
-    src: require("@/assets/images/google.png"),
-  },
-  {
-    id: 2,
-    name: "Facebook",
-    src: require("@/assets/images/facebook.png"),
-  },
-];
-
 const phrases = [
-  "A criar o teu cantinho...",
-  "A preparar o teu espaço...",
-  "A registar-te nos nossos livros mágicos...",
-  "A organizar a papelada digital...",
-  "Quase lá...",
+  "A abrir as portas do PocketList...",
+  "A conectar-te ao mundo mágico das listas...",
+  "A guardar os teus segredos digitais...",
+  "A preparar o teu espaço pessoal...",
+  "A alinhar as estrelas do PocketList...",
+  "A dar vida às tuas ideias...",
+  "A organizar o teu universo digital...",
+  "A desbloquear o teu cantinho especial...",
+  "A preparar as surpresas do PocketList...",
+  "A criar ligações mágicas...",
 ];
 
 export default function Login() {
@@ -66,12 +60,56 @@ export default function Login() {
   const [user, setUser] = useState(null);
   const emailValue = watch("email");
 
+  // # FIXME - Google auth
+  // const redirectUri = AuthSession.makeRedirectUri({ useProxy: true });
+  // const redirectUri = "https://auth.expo.io/@moliveiraa/PocketList";
+
+  // const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
+  //   clientId:
+  //     "1099106249725-umpk4vp5mgjjv3cu4ushocnmn31nmjhm.apps.googleusercontent.com",
+  //   redirectUri,
+  // });
+
+  const loginMethods = [
+    {
+      id: 1,
+      name: "Google",
+      src: require("@/assets/images/google.png"),
+      signin: async () => {
+        // if (request) {
+        //   await promptAsync();
+        // }
+      },
+    },
+    {
+      id: 2,
+      name: "Facebook",
+      src: require("@/assets/images/facebook.png"),
+      signin: () => console.log("redirect new: "),
+    },
+  ];
+
+  // useEffect(() => {
+  //   const handleGoogleSignIn = async () => {
+  //     if (response?.type === "success") {
+  //       const { id_token } = response.params;
+
+  //       try {
+  //         const result = await signInWithGoogle(id_token);
+  //         console.log("Firebase sign-in success:", result);
+  //         // Maybe navigate or update state here
+  //       } catch (error: any) {
+  //         console.error("Firebase sign-in error:", error);
+  //         Alert.alert("Erro no login", error.message || "Erro desconhecido");
+  //       }
+  //     }
+  //   };
+
+  //   handleGoogleSignIn();
+  // }, [response]);
+
   const handleValidating = () => {
     setIsValidating(!isValidating);
-  };
-
-  const handleGoogleLogin = async () => {
-    
   };
 
   const onSubmit = async (data: any) => {
@@ -88,7 +126,7 @@ export default function Login() {
 
       setUserData(result);
       setIsLoading(false);
-      // router.replace("screens/home");
+      router.replace("screens/home");
     } catch (error: any) {
       const genericMessage = "Credenciais inválidas.";
 
@@ -143,7 +181,11 @@ export default function Login() {
 
           <View style={styles.methodsContainer}>
             {loginMethods.map((method) => (
-              <Pressable key={method.id} style={styles.methodBtn}>
+              <Pressable
+                key={method.id}
+                style={styles.methodBtn}
+                onPress={method.signin}
+              >
                 <Image
                   source={method.src}
                   style={styles.methodBtnIcon}
