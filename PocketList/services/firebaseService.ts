@@ -87,6 +87,10 @@ export const registerUser = async (data: any) => {
                 pending: [],
                 blocked: [],
             },
+            notifications: {
+                unread: [],
+                read: [],
+            }
         };
 
         try {

@@ -48,6 +48,7 @@ export const Colors = {
     success: 'hsl(140, 60%, 45%)',
     danger: 'hsl(0, 85%, 60%)',
     shadow: '0 4px 8px 0 rgba(0, 0, 0, 0.15)',
+    shadow100: '0 1px 4px 0 rgba(0, 0, 0, 0.10)',
     navShadow: '0 0 8px 0 rgba(0, 0, 0, 0.15)',
 
     tint: tintColorLight,
@@ -96,6 +97,7 @@ export const Colors = {
     success: 'hsl(140, 60%, 55%)',
     danger: 'hsl(0, 85%, 60%)',
     shadow: '0 0 0 0 rgba(0, 0, 0, 0)',
+    shadow100: '0 0 0 0 rgba(0, 0, 0, 0)',
     navShadow: '0 0 0 0 rgba(0, 0, 0, 0)',
 
     tint: tintColorDark,

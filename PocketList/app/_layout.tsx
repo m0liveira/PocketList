@@ -32,7 +32,6 @@ export default function RootLayout() {
         <Stack.Screen name="screens/login" />
         <Stack.Screen name="screens/signup" />
         <Stack.Screen name="screens/forgotpassword" />
-        <Stack.Screen name="screens/home" />
         <Stack.Screen name="+not-found" />
       </Stack>
       <StatusBar style="auto" />

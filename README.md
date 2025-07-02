@@ -115,8 +115,23 @@ _For more examples, please refer to the [Documentation](https://example.com)_ --
   - [x] Send recover password email
   - [x] Handle previous points on failure
 - [ ] Home screen
-  - [ ] Show user data
-  - [ ] Show user lists
+  - [ ] Notifications
+    - [x] Get notifications
+    - [ ] Show notifications
+    - [ ] Send notifications
+  - [ ] Lists
+      - [ ] Get user lists
+      - [ ] Add new list
+      - [ ] Edit list
+      - [ ] Delete list
+      - [ ] Add colaborators list
+      - [ ] Remove colaborators list
+      - [ ] Join list
+      - [ ] Leave list
+      - [ ] Get list items
+      - [ ] Add list items
+      - [ ] Edit list items
+      - [ ] Remove list items
 - [ ] Features
   - [x] Keep user logged in on app restart
   - [x] keep user out of auth screens when loggedd in

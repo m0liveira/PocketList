@@ -18,19 +18,29 @@ export const Wave = (props: any) => (
   </Svg>
 );
 
+export const Blob = (props: any) => (
+  <Svg viewBox="0 0 200 200" style={props.classname}>
+    <Path
+      fill={props.color || "#000"}
+      d="M30.7,-47.7C36.5,-38.1,35.7,-24.7,40.9,-12.4C46.1,-0.1,57.5,11.1,57.6,21.2C57.8,31.3,46.8,40.3,35.4,49.7C23.9,59.1,11.9,68.9,2.2,65.8C-7.4,62.7,-14.9,46.7,-29.3,38.3C-43.6,29.8,-64.9,28.9,-76.9,18.7C-88.9,8.5,-91.6,-11.1,-81.9,-22.2C-72.2,-33.2,-50,-35.8,-34.3,-42.2C-18.6,-48.6,-9.3,-58.8,1.6,-61C12.5,-63.2,24.9,-57.3,30.7,-47.7Z"
+      transform="translate(100 100)"
+    />
+  </Svg>
+);
+
 export const BackArrow = (props: any) => (
   <Svg viewBox="0 0 24 24" fill="none" style={props.classname}>
     <Path
       d="M19 12H5"
       stroke={props.color || "#000"}
-      strokeWidth="3"
+      strokeWidth="2.5"
       strokeLinecap="round"
       strokeLinejoin="round"
     />
     <Path
       d="M12 19L5 12L12 5"
       stroke={props.color || "#000"}
-      strokeWidth="3"
+      strokeWidth="2.5"
       strokeLinecap="round"
       strokeLinejoin="round"
     />
@@ -141,6 +151,44 @@ export const Profile = (props: any) => (
     />
     <Path
       d="M12.695 11C14.9041 11 16.695 9.20914 16.695 7C16.695 4.79086 14.9041 3 12.695 3C10.4859 3 8.69501 4.79086 8.69501 7C8.69501 9.20914 10.4859 11 12.695 11Z"
+      stroke={props.color || "#000"}
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </Svg>
+);
+
+export const Bell = (props: any) => (
+  <Svg viewBox="0 0 24 24" fill="none" style={props.classname}>
+    <Path
+      d="M18 8C18 6.4087 17.3679 4.88258 16.2426 3.75736C15.1174 2.63214 13.5913 2 12 2C10.4087 2 8.88258 2.63214 7.75736 3.75736C6.63214 4.88258 6 6.4087 6 8C6 15 3 17 3 17H21C21 17 18 15 18 8Z"
+      stroke={props.color || "#000"}
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <Path
+      d="M13.73 21C13.5542 21.3031 13.3018 21.5547 12.9982 21.7295C12.6946 21.9044 12.3504 21.9965 12 21.9965C11.6496 21.9965 11.3054 21.9044 11.0018 21.7295C10.6981 21.5547 10.4458 21.3031 10.27 21"
+      stroke={props.color || "#000"}
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </Svg>
+);
+
+export const Plus = (props: any) => (
+  <Svg viewBox="0 0 30 30" fill="none" style={props.classname}>
+    <Path
+      d="M15 6.25V23.75"
+      stroke={props.color || "#000"}
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <Path
+      d="M6.25 15H23.75"
       stroke={props.color || "#000"}
       strokeWidth="2"
       strokeLinecap="round"

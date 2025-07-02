@@ -8,8 +8,12 @@ import {
 } from "react-native";
 import { Controller } from "react-hook-form";
 import { Link } from "expo-router";
+
+// Styles
 import { formStyles } from "./styles";
 import { globalStyles } from "@/constants/GlobalStyles";
+
+// Components
 import * as CustmoSvgs from "../svgs/Svgs";
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -208,54 +212,7 @@ export default function AuthForm(props: any) {
           placeholder: string;
           keyboardType: KeyboardTypeOptions | undefined;
           autoCapitalize: "none" | "words" | "sentences" | "characters";
-          textContentType:
-            | "none"
-            | "name"
-            | "password"
-            | "URL"
-            | "addressCity"
-            | "addressCityAndState"
-            | "addressState"
-            | "countryName"
-            | "creditCardNumber"
-            | "creditCardExpiration"
-            | "creditCardExpirationMonth"
-            | "creditCardExpirationYear"
-            | "creditCardSecurityCode"
-            | "creditCardType"
-            | "creditCardName"
-            | "creditCardGivenName"
-            | "creditCardMiddleName"
-            | "creditCardFamilyName"
-            | "emailAddress"
-            | "familyName"
-            | "fullStreetAddress"
-            | "givenName"
-            | "jobTitle"
-            | "location"
-            | "middleName"
-            | "namePrefix"
-            | "nameSuffix"
-            | "nickname"
-            | "organizationName"
-            | "postalCode"
-            | "streetAddressLine1"
-            | "streetAddressLine2"
-            | "sublocality"
-            | "telephoneNumber"
-            | "username"
-            | "newPassword"
-            | "oneTimeCode"
-            | "birthdate"
-            | "birthdateDay"
-            | "birthdateMonth"
-            | "birthdateYear"
-            | "cellularEID"
-            | "cellularIMEI"
-            | "dateTime"
-            | "flightNumber"
-            | "shipmentTrackingNumber"
-            | undefined;
+          textContentType: any;
         }[]
       ).map((input, index) => (
         <View key={index} style={styles.inputContainer}>

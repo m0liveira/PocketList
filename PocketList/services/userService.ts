@@ -18,3 +18,7 @@ export const isUserLoggedIn = (): boolean => {
 export const clearUserData = () => {
     currentUser = null;
 };
+
+export const getUserNotifications = () => {
+    return currentUser?.firestoreData?.notifications || { unread: [], read: [] };
+};
