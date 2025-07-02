@@ -1,4 +1,4 @@
-import { useState, useEffect, Key } from "react";
+import { useState, useEffect } from "react";
 import {
   Text,
   View,
@@ -25,11 +25,10 @@ const rndIndex = (list: any) => {
 
 export default function NewList(props: any) {
   const styles = newListStyles(props.colors);
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(rndIndex(props.imageList));
 
   useEffect(() => {
-    setIndex(rndIndex(props.colorList));
-    props.setValue("name", '');
+    props.setValue("name", "");
   }, []);
 
   const renderItem = ({ item }: { item: string }) => (

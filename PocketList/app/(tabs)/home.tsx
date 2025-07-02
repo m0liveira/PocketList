@@ -1,13 +1,18 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
+import { useFocusEffect } from "@react-navigation/native";
 import {
   useColorScheme,
   View,
   Text,
   ScrollView,
   Pressable,
+  Alert,
 } from "react-native";
 import { useForm } from "react-hook-form";
 import { Portal } from "react-native-paper";
+import { collection, doc, serverTimestamp } from "firebase/firestore";
+import { db } from "@/src/firebaseConfig";
+import { router } from "expo-router";
 
 // Styles
 import { Colors } from "@/constants/Colors";
@@ -23,12 +28,29 @@ import {
   isUserLoggedIn,
   getUserNotifications,
 } from "@/services/userService";
+import {
+  setFirestoreData,
+  LIST_COLLECTION_REF,
+  getListsByUserId,
+} from "@/services/firebaseService";
 
 // Components
 import * as Svgs from "@/components/svgs/Svgs";
 import Loading from "@/components/loading/loading";
 import ListCard from "@/components/listCard/listCard";
 import NewList from "@/components/newList/newList";
+
+const phrases = [
+  "A criar a tua lista perfeita...",
+  "A organizar cada detalhe da lista...",
+  "A afiar os lápis do PocketList...",
+  "A costurar a tua lista personalizada...",
+  "A construir o teu espaço de compras...",
+  "A polir os detalhes da tua lista...",
+  "A dar forma às tuas necessidades...",
+  "A ligar cada item com magia...",
+  "A criar ligações entre os teus desejos...",
+];
 
 const imageList = [
   require("@/assets/images/chicken.png"),
@@ -98,17 +120,58 @@ export default function Home() {
 
   const [userData, setUserData] = useState(getUserData());
   const [isNewList, setIsNewList] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [unPinnedLists, setUnPinnedLists] = useState<any[]>([]);
+  const [pinnedLists, setPinnedLists] = useState<any[]>([]);
+
+  useFocusEffect(
+    useCallback(() => {
+      async function fetchLists() {
+        if (userData) {
+          const result = await getListsByUserId(userData.uid);
+          setUnPinnedLists(result.lists);
+          setPinnedLists(result.pinned);
+        }
+      }
+
+      fetchLists();
+    }, [userData])
+  );
 
   const {
     control,
     handleSubmit,
     formState: { errors },
-    watch,
     setValue,
   } = useForm();
 
-  const handleOnSubmit = async (data: any) => {
-    console.log(data);
+  const handleCreateList = async (data: any) => {
+    setIsLoading(true);
+
+    try {
+      const listsCollectionRef = collection(db, LIST_COLLECTION_REF);
+      const endpoint = doc(listsCollectionRef); // generate doc ref with auto-ID
+
+      const list = {
+        id: endpoint.id,
+        name: data.name,
+        type: "shopping",
+        items: [],
+        collaborators: [userData?.uid],
+        isPinned: false,
+        createdAt: serverTimestamp(),
+      };
+
+      await setFirestoreData(list, endpoint);
+
+      setIsNewList(false);
+      setIsLoading(false);
+      // router.replace("/(tabs)/home");
+    } catch (error: any) {
+      Alert.alert("Erro no login", error.message || "Erro desconhecido");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -129,7 +192,35 @@ export default function Home() {
           ) : null}
         </View>
 
-        <ListCard />
+        {pinnedLists.length > 0 ? (
+          <Text style={[globalStyles.text, styles.title]}>Afixado</Text>
+        ) : null}
+
+        {pinnedLists.map((list: any) => (
+          <ListCard
+            key={list.id}
+            // list={list}
+            // colors={colors}
+            // imageList={imageList}
+            // colorList={colorList}
+            // chipsData={chipsData}
+          />
+        ))}
+
+        {pinnedLists.length > 0 ? (
+          <Text style={[globalStyles.text, styles.title]}>Listas</Text>
+        ) : null}
+
+        {unPinnedLists.map((list: any) => (
+          <ListCard
+            key={list.id}
+            // list={list}
+            // colors={colors}
+            // imageList={imageList}
+            // colorList={colorList}
+            // chipsData={chipsData}
+          />
+        ))}
 
         <Pressable style={styles.button} onPress={() => setIsNewList(true)}>
           <Svgs.Plus color="hsl(0, 0%, 96%)" classname={styles.svg} />
@@ -148,8 +239,14 @@ export default function Home() {
             control={control}
             setValue={setValue}
             errors={errors}
-            handleSubmit={handleSubmit(handleOnSubmit)}
+            handleSubmit={handleSubmit(handleCreateList)}
           />
+        </Portal>
+      ) : null}
+
+      {isLoading ? (
+        <Portal>
+          <Loading colors={colors} phrases={phrases} />
         </Portal>
       ) : null}
       {/* ) : (

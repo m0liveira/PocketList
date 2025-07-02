@@ -13,11 +13,12 @@ import {
     signOut,
     User,
 } from "firebase/auth";
-import { doc, setDoc, getDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { getUserData } from "./userService";
 
 // ENDPOINTS
-const USERS_COLLECTION_REF = "users";
+export const USERS_COLLECTION_REF = "users";
+export const LIST_COLLECTION_REF = "lists";
 
 // UTILITY FUNCTIONS
 
@@ -235,6 +236,36 @@ export const getFirestoreData = async (endpoint: any) => {
             throw new Error("Documento não encontrado");
         }
     } catch (error) {
+        throw error;
+    }
+};
+
+export const getListsByUserId = async (userId: string) => {
+    try {
+        const listsRef = collection(db, LIST_COLLECTION_REF);
+        const q = query(listsRef, where("collaborators", "array-contains", userId));
+
+        const querySnapshot = await getDocs(q);
+
+        const unpinned: any[] = [];
+        const pinned: any[] = [];
+
+        querySnapshot.forEach((doc) => {
+            const data = { id: doc.id, isPinned: false, ...doc.data() };
+
+            if (data.isPinned) {
+                pinned.push(data);
+            } else {
+                unpinned.push(data);
+            }
+        });
+
+        return {
+            lists: unpinned,
+            pinned: pinned,
+        };
+    } catch (error) {
+        console.error("Erro ao buscar listas:", error);
         throw error;
     }
 };

@@ -121,7 +121,7 @@ _For more examples, please refer to the [Documentation](https://example.com)_ --
     - [ ] Send notifications
   - [ ] Lists
       - [ ] Get user lists
-      - [ ] Add new list
+      - [x] Add new list
       - [ ] Edit list
       - [ ] Delete list
       - [ ] Add colaborators list

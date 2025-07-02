@@ -10,6 +10,7 @@ export const homeStyles = (colors: any) =>
       backgroundColor: colors.bg200,
       paddingTop: "13%",
       paddingHorizontal: "5%",
+      paddingBottom: "15%",
     },
     scrollContainer: {
       justifyContent: "flex-start",
@@ -40,6 +41,11 @@ export const homeStyles = (colors: any) =>
       borderRadius: 100,
       width: 10,
       height: 10,
+    },
+    title: {
+      fontSize: 14,
+      color: colors.n200,
+      marginTop: 20,
     },
     button: {
       display: "flex",
