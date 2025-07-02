@@ -150,7 +150,7 @@ export default function Home() {
 
     try {
       const listsCollectionRef = collection(db, LIST_COLLECTION_REF);
-      const endpoint = doc(listsCollectionRef); // generate doc ref with auto-ID
+      const endpoint = doc(listsCollectionRef);
 
       const list = {
         id: endpoint.id,
@@ -196,14 +196,14 @@ export default function Home() {
           <Text style={[globalStyles.text, styles.title]}>Afixado</Text>
         ) : null}
 
-        {pinnedLists.map((list: any) => (
+        {pinnedLists.map((list: any, index: number) => (
           <ListCard
             key={list.id}
-            // list={list}
-            // colors={colors}
-            // imageList={imageList}
-            // colorList={colorList}
-            // chipsData={chipsData}
+            list={list}
+            colors={colors}
+            style={{
+              marginTop: index === 0 ? 10 : 20,
+            }}
           />
         ))}
 
@@ -211,14 +211,14 @@ export default function Home() {
           <Text style={[globalStyles.text, styles.title]}>Listas</Text>
         ) : null}
 
-        {unPinnedLists.map((list: any) => (
+        {unPinnedLists.map((list: any, index: number) => (
           <ListCard
             key={list.id}
-            // list={list}
-            // colors={colors}
-            // imageList={imageList}
-            // colorList={colorList}
-            // chipsData={chipsData}
+            list={list}
+            colors={colors}
+            style={{
+              marginTop: index === 0 ? 10 : 20,
+            }}
           />
         ))}
 

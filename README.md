@@ -120,7 +120,7 @@ _For more examples, please refer to the [Documentation](https://example.com)_ --
     - [ ] Show notifications
     - [ ] Send notifications
   - [ ] Lists
-      - [ ] Get user lists
+      - [x] Get user lists
       - [x] Add new list
       - [ ] Edit list
       - [ ] Delete list

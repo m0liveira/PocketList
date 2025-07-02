@@ -52,12 +52,10 @@ export const getUser = async (user: any) => {
         uid: user.uid,
         email: user.email,
         emailVerified: user.emailVerified,
-        isAnonymous: user.isAnonymous,
-        providerData: user.providerData,
         createdAt: user.metadata.creationTime || "",
         lastLoginAt: user.metadata.lastSignInTime || "",
         photoURL: user.photoURL,
-        displayName: user.displayName,
+        username: user.displayName,
         firestoreData: result,
     }
     return data;
@@ -81,6 +79,9 @@ export const registerUser = async (data: any) => {
         const date = new Date();
 
         const userData = {
+            uid: user.uid,
+            email: data.email,
+            username: data.username,
             code: await generateUserCode(data.email, data.username, date.toLocaleDateString("pt-PT"), user.uid),
             createdAt: date.toLocaleDateString("pt-PT"),
             friends: {
@@ -215,6 +216,8 @@ export const resetPassword = async (email: string) => {
     }
 };
 
+
+
 // FIRESTORE FUNCTIONS
 
 export const setFirestoreData = async (data: any, endpoint: any) => {
@@ -269,3 +272,18 @@ export const getListsByUserId = async (userId: string) => {
         throw error;
     }
 };
+
+export const getUserInfo = async (userId: string) => {
+    try {
+        const userRef = doc(db, USERS_COLLECTION_REF, userId);
+        const userDoc = await getDoc(userRef);
+
+        if (userDoc.exists()) {
+            return { id: userDoc.id, email: userDoc.data().email, username: userDoc.data().username };
+        } else {
+            throw new Error("Usuário não encontrado");
+        }
+    } catch (error) {
+        throw error;
+    }
+}
