@@ -120,18 +120,20 @@ _For more examples, please refer to the [Documentation](https://example.com)_ --
     - [ ] Show notifications
     - [ ] Send notifications
   - [ ] Lists
-      - [x] Get user lists
-      - [x] Add new list
-      - [ ] Edit list
-      - [ ] Delete list
-      - [ ] Add colaborators list
-      - [ ] Remove colaborators list
-      - [ ] Join list
-      - [ ] Leave list
-      - [ ] Get list items
-      - [ ] Add list items
-      - [ ] Edit list items
-      - [ ] Remove list items
+    - [x] Get user lists
+    - [x] Add new list
+    - [ ] Edit list
+    - [x] Delete list
+    - [ ] Add list to pinned lists
+    - [ ] Remove list from pinned lists
+    - [ ] Add colaborators list
+    - [ ] Remove colaborators list
+    - [ ] Join list
+    - [ ] Leave list
+    - [ ] Get list items
+    - [ ] Add list items
+    - [ ] Edit list items
+    - [ ] Remove list items
 - [ ] Features
   - [x] Keep user logged in on app restart
   - [x] keep user out of auth screens when loggedd in

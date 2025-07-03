@@ -2,18 +2,60 @@ import { StyleSheet } from "react-native";
 
 export const homeStyles = (colors: any) =>
   StyleSheet.create({
+    page: {
+      flex: 1,
+      backgroundColor: colors.bg200,
+    },
     container: {
       position: "relative",
       top: 0,
       left: 0,
-      flex: 1,
-      backgroundColor: colors.bg200,
-      paddingTop: "13%",
       paddingHorizontal: "5%",
-      paddingBottom: "15%",
     },
     scrollContainer: {
       justifyContent: "flex-start",
+      // minHeight: "100%",
+      paddingBottom: "80%",
+    },
+    emptyContainer: {
+      width: "100%",
+      height: "60%",
+      paddingHorizontal: "5%",
+    },
+    empty: {
+      position: "relative",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "flex-end",
+      width: "100%",
+      height: "50%",
+      paddingHorizontal: "5%",
+    },
+    blob: {
+      position: "absolute",
+      top: "23%",
+      left: "20%",
+      height: "100%",
+      aspectRatio: 1 / 1,
+      transform: [{ rotate: "-45deg" }],
+      zIndex: 0,
+    },
+    image: {
+      objectFit: "contain",
+      height: "70%",
+      aspectRatio: 1 / 1,
+    },
+    emptyText: {
+      fontSize: 22,
+      color: colors.text,
+      textAlign: "center",
+      marginTop: 70,
+    },
+    emptySubText: {
+      fontSize: 15,
+      color: colors.n400,
+      textAlign: "center",
+      marginTop: 20,
     },
     header: {
       position: "relative",
@@ -21,7 +63,11 @@ export const homeStyles = (colors: any) =>
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "center",
+      backgroundColor: colors.bg200,
       width: "100%",
+      paddingTop: 50,
+      paddingBottom: 20,
+      paddingHorizontal: "5%",
     },
     pageTitle: {
       fontSize: 20,
@@ -56,9 +102,19 @@ export const homeStyles = (colors: any) =>
       backgroundColor: colors.p400,
       boxShadow: colors.shadow,
       borderRadius: 100,
-      width: "100%",
+      width: "90%",
+      alignSelf: "center",
       paddingVertical: 15,
-      marginTop: 100,
+      // marginTop: 100,
+    },
+    buttonSmall: {
+      position: "absolute",
+      width: "40%",
+      alignSelf: "flex-end",
+      marginTop: 0,
+      marginRight: "5%",
+      bottom: "15%",
+      zIndex: 2,
     },
     btnText: {
       color: "hsl(0, 0%, 96%)",

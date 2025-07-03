@@ -13,7 +13,7 @@ import {
     signOut,
     User,
 } from "firebase/auth";
-import { doc, setDoc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
+import { doc, setDoc, getDoc, collection, query, where, getDocs, deleteDoc } from "firebase/firestore";
 import { getUserData } from "./userService";
 
 // ENDPOINTS
@@ -243,7 +243,16 @@ export const getFirestoreData = async (endpoint: any) => {
     }
 };
 
-export const getListsByUserId = async (userId: string) => {
+export const deleteFirestoreData = async (endpoint: string, docId: string) => {
+  try {
+    const docRef = doc(db, endpoint, docId);
+    await deleteDoc(docRef);
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getUserLists = async (userId: string, type: string) => {
     try {
         const listsRef = collection(db, LIST_COLLECTION_REF);
         const q = query(listsRef, where("collaborators", "array-contains", userId));
@@ -254,12 +263,13 @@ export const getListsByUserId = async (userId: string) => {
         const pinned: any[] = [];
 
         querySnapshot.forEach((doc) => {
-            const data = { id: doc.id, isPinned: false, ...doc.data() };
-
-            if (data.isPinned) {
-                pinned.push(data);
-            } else {
-                unpinned.push(data);
+            const data = { id: doc.id, isPinned: doc.data().isPinned, type: doc.data().type, ...doc.data() };
+            if (data.type === type) {
+                if (data.isPinned) {
+                    pinned.push(data);
+                } else {
+                    unpinned.push(data);
+                }
             }
         });
 

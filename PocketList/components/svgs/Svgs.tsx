@@ -183,14 +183,14 @@ export const Plus = (props: any) => (
     <Path
       d="M15 6.25V23.75"
       stroke={props.color || "#000"}
-      strokeWidth="2"
+      strokeWidth="3"
       strokeLinecap="round"
       strokeLinejoin="round"
     />
     <Path
       d="M6.25 15H23.75"
       stroke={props.color || "#000"}
-      strokeWidth="2"
+      strokeWidth="3"
       strokeLinecap="round"
       strokeLinejoin="round"
     />

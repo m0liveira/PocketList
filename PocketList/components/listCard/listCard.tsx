@@ -92,13 +92,7 @@ export default function ListCard(props: any) {
   }, []);
 
   return (
-    <View
-      style={[
-        styles.container,
-        props.style,
-        progress === 100 ? { opacity: 0.6 } : null,
-      ]}
-    >
+    <View style={[styles.container, props.style]}>
       <View style={styles.wrapper}>
         <View style={styles.titleWrapper}>
           <Text style={[globalStyles.text, styles.title]}>
@@ -135,18 +129,22 @@ export default function ListCard(props: any) {
           ) : null}
         </View>
 
-        <Pressable
-          onPress={() => {
-            console.log(props.list.id);
-          }}
-        >
+        <Pressable onPress={props.onOpen}>
           <Svgs.More color={props.colors.n300} classname={styles.svg} />
         </Pressable>
       </View>
 
       <View style={styles.wrapper}>
         <View style={styles.bar}>
-          <View style={[styles.progress, { width: `${progress}%` }]}></View>
+          <View
+            style={[
+              styles.progress,
+              { width: `${progress}%` },
+              progress === 100
+                ? { backgroundColor: props.colors.success }
+                : null,
+            ]}
+          ></View>
         </View>
 
         <Text style={[globalStyles.text, styles.indicator]}>

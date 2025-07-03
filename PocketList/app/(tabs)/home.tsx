@@ -6,6 +6,7 @@ import {
   Text,
   ScrollView,
   Pressable,
+  Image,
   Alert,
 } from "react-native";
 import { useForm } from "react-hook-form";
@@ -30,8 +31,9 @@ import {
 } from "@/services/userService";
 import {
   setFirestoreData,
+  deleteFirestoreData,
   LIST_COLLECTION_REF,
-  getListsByUserId,
+  getUserLists,
 } from "@/services/firebaseService";
 
 // Components
@@ -39,6 +41,7 @@ import * as Svgs from "@/components/svgs/Svgs";
 import Loading from "@/components/loading/loading";
 import ListCard from "@/components/listCard/listCard";
 import NewList from "@/components/newList/newList";
+import ActionSheet from "@/components/actionSheet/actionSheet";
 
 const phrases = [
   "A criar a tua lista perfeita...",
@@ -97,43 +100,45 @@ export default function Home() {
   // const colors = Colors[colorScheme ?? "light"];
   const styles = homeStyles(colors);
 
-  // function RedirectLoading() {
-  //   const { loading } = useInitialRedirect();
-  //   const phrases = [
-  //     "A abrir as portas do PocketList...",
-  //     "A conectar-te ao mundo mágico das listas...",
-  //     "A guardar os teus segredos digitais...",
-  //     "A preparar o teu espaço pessoal...",
-  //     "A alinhar as estrelas do PocketList...",
-  //     "A dar vida às tuas ideias...",
-  //     "A organizar o teu universo digital...",
-  //     "A desbloquear o teu cantinho especial...",
-  //     "A preparar as surpresas do PocketList...",
-  //     "A criar ligações mágicas...",
-  //   ];
+  function RedirectLoading() {
+    const { loading } = useInitialRedirect();
+    const phrases = [
+      "A abrir as portas do PocketList...",
+      "A conectar-te ao mundo mágico das listas...",
+      "A guardar os teus segredos digitais...",
+      "A preparar o teu espaço pessoal...",
+      "A alinhar as estrelas do PocketList...",
+      "A dar vida às tuas ideias...",
+      "A organizar o teu universo digital...",
+      "A desbloquear o teu cantinho especial...",
+      "A preparar as surpresas do PocketList...",
+      "A criar ligações mágicas...",
+    ];
 
-  //   if (loading) {
-  //     return <Loading colors={colors} phrases={phrases} />;
-  //   }
-  //   return null;
-  // }
+    if (loading) {
+      return <Loading colors={colors} phrases={phrases} />;
+    }
+    return null;
+  }
 
   const [userData, setUserData] = useState(getUserData());
-  const [isNewList, setIsNewList] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [unPinnedLists, setUnPinnedLists] = useState<any[]>([]);
   const [pinnedLists, setPinnedLists] = useState<any[]>([]);
+  const [selectedList, setSelectedList] = useState<any>(null);
+  const [isNewList, setIsNewList] = useState(false);
+  const [actionVisible, setActionVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  async function fetchLists() {
+    if (userData) {
+      const result = await getUserLists(userData.uid, "shopping");
+      setUnPinnedLists(result.lists);
+      setPinnedLists(result.pinned);
+    }
+  }
 
   useFocusEffect(
     useCallback(() => {
-      async function fetchLists() {
-        if (userData) {
-          const result = await getListsByUserId(userData.uid);
-          setUnPinnedLists(result.lists);
-          setPinnedLists(result.pinned);
-        }
-      }
-
       fetchLists();
     }, [userData])
   );
@@ -174,84 +179,182 @@ export default function Home() {
     }
   };
 
+  const handleDelete = async () => {
+    setIsLoading(true);
+
+    try {
+      await deleteFirestoreData(LIST_COLLECTION_REF, selectedList.id);
+
+      setActionVisible(false);
+      setSelectedList(null);
+      await fetchLists();
+    } catch (error: any) {
+      Alert.alert("Erro", error.message || "Erro desconhecido");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // TODO - Add a handle pin list
+
+  const handleEdit = () => console.log("Editing!");
+
   return (
     <>
-      {/* {isUserLoggedIn() ? ( */}
-      <ScrollView
-        style={styles.container}
-        contentContainerStyle={styles.scrollContainer}
-      >
-        <View style={styles.header}>
-          <Text style={[globalStyles.text, styles.pageTitle]}>
-            Listas de compras
-          </Text>
-          <Svgs.Bell color={colors.text} classname={styles.svg} />
+      {isUserLoggedIn() ? (
+        <View style={styles.page}>
+          <View style={styles.header}>
+            <Text style={[globalStyles.text, styles.pageTitle]}>
+              Listas de compras
+            </Text>
 
-          {getUserNotifications().unread.length > 0 ? (
-            <View style={styles.hasNotification} />
+            <Svgs.Bell color={colors.text} classname={styles.svg} />
+
+            {getUserNotifications().unread.length > 0 ? (
+              <View style={styles.hasNotification} />
+            ) : null}
+          </View>
+
+          {unPinnedLists.length > 0 || pinnedLists.length > 0 ? (
+            <ScrollView
+              style={styles.container}
+              contentContainerStyle={styles.scrollContainer}
+            >
+              {pinnedLists.length > 0 ? (
+                <Text style={[globalStyles.text, styles.title]}>Afixado</Text>
+              ) : null}
+
+              {pinnedLists.map((list: any, index: number) => (
+                <ListCard
+                  key={list.id}
+                  list={list}
+                  colors={colors}
+                  onOpen={() => {
+                    setSelectedList(list);
+                    setActionVisible(true);
+                  }}
+                  style={{
+                    marginTop: index === 0 && pinnedLists.length > 0 ? 10 : 20,
+                  }}
+                />
+              ))}
+
+              {pinnedLists.length > 0 ? (
+                <Text style={[globalStyles.text, styles.title]}>Listas</Text>
+              ) : null}
+
+              {unPinnedLists.map((list: any, index: number) => (
+                <ListCard
+                  key={list.id}
+                  list={list}
+                  colors={colors}
+                  onOpen={() => {
+                    setSelectedList(list);
+                    setActionVisible(true);
+                  }}
+                  style={{
+                    marginTop: index === 0 && pinnedLists.length > 0 ? 10 : 20,
+                  }}
+                />
+              ))}
+            </ScrollView>
+          ) : (
+            <View style={styles.emptyContainer}>
+              <View style={styles.empty}>
+                <Svgs.Blob color={colors.blob1} classname={styles.blob} />
+                <Image
+                  style={styles.image}
+                  source={require("@/assets/images/basket.png")}
+                  resizeMode="contain"
+                  accessibilityLabel={"Basket"}
+                  accessibilityHint={"A 3D shopping basket"}
+                  accessibilityRole="image"
+                />
+              </View>
+
+              <Text style={[globalStyles.text, styles.emptyText]}>
+                Sem lista, sem compras! 😋
+              </Text>
+
+              <Text style={[globalStyles.text, styles.emptySubText]}>
+                Bora encher com coisas boas?
+                {"\n"}
+                Começa uma lista e organiza as tuas compras!
+              </Text>
+            </View>
+          )}
+
+          <Pressable
+            style={[
+              styles.button,
+              unPinnedLists.length > 0 || pinnedLists.length > 0
+                ? styles.buttonSmall
+                : null,
+            ]}
+            onPress={() => setIsNewList(true)}
+          >
+            <Svgs.Plus color="hsl(0, 0%, 96%)" classname={styles.svg} />
+            <Text style={[globalStyles.text, styles.btnText]}>Nova lista</Text>
+          </Pressable>
+
+          {isNewList ? (
+            <Portal>
+              <NewList
+                colors={colors}
+                imageList={imageList}
+                colorList={colorList}
+                chipsData={chipsData}
+                isNewList={setIsNewList}
+                control={control}
+                setValue={setValue}
+                errors={errors}
+                handleSubmit={handleSubmit(handleCreateList)}
+              />
+            </Portal>
+          ) : null}
+
+          {isLoading ? (
+            <Portal>
+              <Loading colors={colors} phrases={phrases} />
+            </Portal>
+          ) : null}
+
+          {actionVisible ? (
+            <Portal>
+              <ActionSheet
+                colors={colors}
+                visible={actionVisible}
+                listName={selectedList?.name || "erro"}
+                collaborators={selectedList?.collaborators.length || 0}
+                onClose={() => setActionVisible(false)}
+                onDelete={handleDelete}
+                onEdit={handleEdit}
+                deleteText={
+                  selectedList?.collaborators.length <= 1
+                    ? "Tem a certeza que quer eliminar " +
+                      selectedList?.name +
+                      "?"
+                    : "Tem a certeza que quer sair de " +
+                      selectedList?.name +
+                      "?"
+                }
+                options={[
+                  { label: "Editar lista", edit: true },
+                  {
+                    label:
+                      selectedList?.collaborators.length <= 1
+                        ? "Eliminar lista"
+                        : "Sair da lista",
+                    destructive: true,
+                  },
+                ]}
+              />
+            </Portal>
           ) : null}
         </View>
-
-        {pinnedLists.length > 0 ? (
-          <Text style={[globalStyles.text, styles.title]}>Afixado</Text>
-        ) : null}
-
-        {pinnedLists.map((list: any, index: number) => (
-          <ListCard
-            key={list.id}
-            list={list}
-            colors={colors}
-            style={{
-              marginTop: index === 0 ? 10 : 20,
-            }}
-          />
-        ))}
-
-        {pinnedLists.length > 0 ? (
-          <Text style={[globalStyles.text, styles.title]}>Listas</Text>
-        ) : null}
-
-        {unPinnedLists.map((list: any, index: number) => (
-          <ListCard
-            key={list.id}
-            list={list}
-            colors={colors}
-            style={{
-              marginTop: index === 0 ? 10 : 20,
-            }}
-          />
-        ))}
-
-        <Pressable style={styles.button} onPress={() => setIsNewList(true)}>
-          <Svgs.Plus color="hsl(0, 0%, 96%)" classname={styles.svg} />
-          <Text style={[globalStyles.text, styles.btnText]}>Nova lista</Text>
-        </Pressable>
-      </ScrollView>
-
-      {isNewList ? (
-        <Portal>
-          <NewList
-            colors={colors}
-            imageList={imageList}
-            colorList={colorList}
-            chipsData={chipsData}
-            isNewList={setIsNewList}
-            control={control}
-            setValue={setValue}
-            errors={errors}
-            handleSubmit={handleSubmit(handleCreateList)}
-          />
-        </Portal>
-      ) : null}
-
-      {isLoading ? (
-        <Portal>
-          <Loading colors={colors} phrases={phrases} />
-        </Portal>
-      ) : null}
-      {/* ) : (
-        RedirectLoading()
-      )} */}
+      ) : (
+        <>{RedirectLoading()}</>
+      )}
     </>
   );
 }

@@ -46,6 +46,8 @@ export const listCardStyles = (colors: any) =>
       width: 20,
       height: 20,
       borderRadius: 100,
+      borderWidth: 1,
+      borderColor: colors.n800,
       backgroundColor: colors.n300,
     },
     name: {
