@@ -122,14 +122,12 @@ _For more examples, please refer to the [Documentation](https://example.com)_ --
   - [ ] Lists
     - [x] Get user lists
     - [x] Add new list
-    - [ ] Edit list
+    - [x] Edit list
     - [x] Delete list
-    - [ ] Add list to pinned lists
-    - [ ] Remove list from pinned lists
-    - [ ] Add colaborators list
-    - [ ] Remove colaborators list
+    - [x] Add list to pinned lists
+    - [x] Remove list from pinned lists
     - [ ] Join list
-    - [ ] Leave list
+    - [x] Leave list
     - [ ] Get list items
     - [ ] Add list items
     - [ ] Edit list items

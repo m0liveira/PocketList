@@ -6,14 +6,18 @@ import {
   Dimensions,
   Animated,
   Easing,
+  TextInput,
 } from "react-native";
 
 // Styles
 import { globalStyles } from "@/constants/GlobalStyles";
 import { actionSheetStyles } from "./styles";
+import { Controller } from "react-hook-form";
 
-// Services
+// Components
+import * as Svgs from "@/components/svgs/Svgs";
 
+const nameRegex = /^(?!.*\s{2,})([^\s]+(?:\s[^\s]+)*){1,24}$/;
 const { height } = Dimensions.get("window");
 
 export default function ActionSheet(props: any) {
@@ -24,6 +28,8 @@ export default function ActionSheet(props: any) {
   const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
+    props.setValue("name", "");
+
     if (props.visible) {
       Animated.timing(translateY, {
         toValue: 0,
@@ -65,12 +71,12 @@ export default function ActionSheet(props: any) {
                 key={index}
                 style={styles.option}
                 onPress={() => {
-                  if (option.edit === true) {
+                  if (option.edit) {
                     setIsEditing(true);
-                    // props.onEdit();
-                  } else {
+                  } else if (option.destructive) {
                     setIsDeleting(true);
-                    // props.onDelete();
+                  } else {
+                    option.onPress();
                   }
                 }}
               >
@@ -103,6 +109,50 @@ export default function ActionSheet(props: any) {
             >
               Voltar
             </Text>
+
+            <View style={styles.inputContainer}>
+              <Svgs.UserName classname={styles.svg} color={props.colors.n400} />
+
+              <Controller
+                control={props.control}
+                name="name"
+                rules={{
+                  required: "O campo é obrigatório",
+                  pattern: {
+                    value: nameRegex,
+                    message:
+                      "O nome da lista deve ter no máximo 24 caracteres, sem espaços consecutivos",
+                  },
+                }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <TextInput
+                    style={[
+                      globalStyles.text,
+                      styles.input,
+                      props.errors["name"] ? styles.inputError : null,
+                    ]}
+                    placeholder="Ex. Compras do mês"
+                    placeholderTextColor={props.colors.n300}
+                    keyboardType="default"
+                    autoCapitalize="none"
+                    textContentType="name"
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    value={value}
+                  />
+                )}
+              />
+            </View>
+
+            {props.errors["name"] ? (
+              <Text style={[globalStyles.text, styles.error]}>
+                {props.errors["name"].message}
+              </Text>
+            ) : null}
+
+            <Pressable onPress={props.handleSubmit} style={styles.button}>
+              <Text style={[globalStyles.text, styles.btnText]}>Guardar</Text>
+            </Pressable>
           </View>
         ) : isDeleting ? (
           <View>

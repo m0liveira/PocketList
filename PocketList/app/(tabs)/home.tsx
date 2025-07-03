@@ -179,15 +179,18 @@ export default function Home() {
     }
   };
 
-  const handleDelete = async () => {
+  const handlePin = async () => {
     setIsLoading(true);
 
     try {
-      await deleteFirestoreData(LIST_COLLECTION_REF, selectedList.id);
+      const endpoint = doc(db, LIST_COLLECTION_REF, selectedList.id);
+
+      await setFirestoreData({ isPinned: !selectedList.isPinned }, endpoint);
+
+      await fetchLists();
 
       setActionVisible(false);
       setSelectedList(null);
-      await fetchLists();
     } catch (error: any) {
       Alert.alert("Erro", error.message || "Erro desconhecido");
     } finally {
@@ -195,9 +198,53 @@ export default function Home() {
     }
   };
 
-  // TODO - Add a handle pin list
+  const handleDelete = async () => {
+    setIsLoading(true);
 
-  const handleEdit = () => console.log("Editing!");
+    try {
+      if (selectedList.collaborators.length === 1) {
+        await deleteFirestoreData(LIST_COLLECTION_REF, selectedList.id);
+      } else {
+        const endpoint = doc(db, LIST_COLLECTION_REF, selectedList.id);
+
+        const updatedCollaborators = selectedList.collaborators.filter(
+          (user: string) => user !== userData?.uid
+        );
+
+        await setFirestoreData(
+          { collaborators: updatedCollaborators },
+          endpoint
+        );
+      }
+
+      await fetchLists();
+      setActionVisible(false);
+      setSelectedList(null);
+    } catch (error: any) {
+      Alert.alert("Erro", error.message || "Erro desconhecido");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleEdit = async (data: any) => {
+    setIsLoading(true);
+
+    try {
+      const endpoint = doc(db, LIST_COLLECTION_REF, selectedList.id);
+
+      await setFirestoreData({ name: data.name }, endpoint);
+
+      await fetchLists();
+
+      setActionVisible(false);
+      setSelectedList(null);
+    } catch (error: any) {
+      Alert.alert("Erro", error.message || "Erro desconhecido");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <>
@@ -239,7 +286,7 @@ export default function Home() {
                 />
               ))}
 
-              {pinnedLists.length > 0 ? (
+              {unPinnedLists.length > 0 ? (
                 <Text style={[globalStyles.text, styles.title]}>Listas</Text>
               ) : null}
 
@@ -339,6 +386,13 @@ export default function Home() {
                       "?"
                 }
                 options={[
+                  {
+                    label: selectedList?.isPinned
+                      ? "Desafixar lista"
+                      : "Afixar lista",
+                    edit: false,
+                    onPress: handlePin,
+                  },
                   { label: "Editar lista", edit: true },
                   {
                     label:
@@ -348,6 +402,10 @@ export default function Home() {
                     destructive: true,
                   },
                 ]}
+                control={control}
+                setValue={setValue}
+                errors={errors}
+                handleSubmit={handleSubmit(handleEdit)}
               />
             </Portal>
           ) : null}

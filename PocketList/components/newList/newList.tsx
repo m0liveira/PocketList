@@ -138,7 +138,6 @@ export default function NewList(props: any) {
       <Pressable
         onPress={props.handleSubmit}
         style={styles.button}
-        // disabled={props.isLoading}
       >
         <Text style={[globalStyles.text, styles.btnText]}>Criar lista</Text>
       </Pressable>
