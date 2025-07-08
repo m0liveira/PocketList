@@ -125,6 +125,7 @@ export default function Home() {
   const [unPinnedLists, setUnPinnedLists] = useState<any[]>([]);
   const [pinnedLists, setPinnedLists] = useState<any[]>([]);
   const [selectedList, setSelectedList] = useState<any>(null);
+  const [selectedFriends, setSelectedFriends] = useState<any[]>([]);
   const [isNewList, setIsNewList] = useState(false);
   const [actionVisible, setActionVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -134,6 +135,7 @@ export default function Home() {
       const result = await getUserLists(userData.uid, "shopping");
       setUnPinnedLists(result.lists);
       setPinnedLists(result.pinned);
+      // TODO: Add pending lists to the notifications screen
     }
   }
 
@@ -162,7 +164,9 @@ export default function Home() {
         name: data.name,
         type: "shopping",
         items: [],
-        collaborators: [userData?.uid],
+        creator: userData?.uid,
+        collaborators: [],
+        pending: [...selectedFriends],
         isPinned: false,
         createdAt: serverTimestamp(),
       };
@@ -202,19 +206,41 @@ export default function Home() {
     setIsLoading(true);
 
     try {
-      if (selectedList.collaborators.length === 1) {
+      if (
+        selectedList?.creator === userData?.uid &&
+        selectedList?.collaborators.length === 0
+      ) {
         await deleteFirestoreData(LIST_COLLECTION_REF, selectedList.id);
       } else {
         const endpoint = doc(db, LIST_COLLECTION_REF, selectedList.id);
 
-        const updatedCollaborators = selectedList.collaborators.filter(
-          (user: string) => user !== userData?.uid
-        );
+        let updatedData: any = {};
 
-        await setFirestoreData(
-          { collaborators: updatedCollaborators },
-          endpoint
-        );
+        if (selectedList.creator === userData?.uid) {
+          const randomCollaborator =
+            selectedList.collaborators[
+              Math.floor(Math.random() * selectedList.collaborators.length)
+            ];
+
+          const updatedCollaborators = selectedList.collaborators.filter(
+            (user: string) => user !== randomCollaborator
+          );
+
+          updatedData = {
+            creator: randomCollaborator,
+            collaborators: updatedCollaborators,
+          };
+        } else {
+          const updatedCollaborators = selectedList.collaborators.filter(
+            (user: string) => user !== userData?.uid
+          );
+
+          updatedData = {
+            collaborators: updatedCollaborators,
+          };
+        }
+
+        await setFirestoreData(updatedData, endpoint);
       }
 
       await fetchLists();
@@ -351,6 +377,8 @@ export default function Home() {
                 imageList={imageList}
                 colorList={colorList}
                 chipsData={chipsData}
+                setFriends={setSelectedFriends}
+                friends={selectedFriends}
                 isNewList={setIsNewList}
                 control={control}
                 setValue={setValue}
@@ -373,11 +401,13 @@ export default function Home() {
                 visible={actionVisible}
                 listName={selectedList?.name || "erro"}
                 collaborators={selectedList?.collaborators.length || 0}
+                creator={selectedList?.creator}
                 onClose={() => setActionVisible(false)}
                 onDelete={handleDelete}
                 onEdit={handleEdit}
                 deleteText={
-                  selectedList?.collaborators.length <= 1
+                  selectedList?.creator === userData?.uid &&
+                  selectedList?.collaborators.length === 0
                     ? "Tem a certeza que quer eliminar " +
                       selectedList?.name +
                       "?"
@@ -393,15 +423,21 @@ export default function Home() {
                     edit: false,
                     onPress: handlePin,
                   },
-                  { label: "Editar lista", edit: true },
+                  selectedList?.creator === userData?.uid && {
+                    label: "Editar lista",
+                    edit: true,
+                    onPress: handleEdit,
+                  },
                   {
                     label:
-                      selectedList?.collaborators.length <= 1
+                      selectedList?.creator === userData?.uid &&
+                      selectedList?.collaborators.length === 0
                         ? "Eliminar lista"
                         : "Sair da lista",
                     destructive: true,
+                    onPress: handleDelete,
                   },
-                ]}
+                ].filter(Boolean)}
                 control={control}
                 setValue={setValue}
                 errors={errors}

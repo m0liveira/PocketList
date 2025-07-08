@@ -244,26 +244,40 @@ export const getFirestoreData = async (endpoint: any) => {
 };
 
 export const deleteFirestoreData = async (endpoint: string, docId: string) => {
-  try {
-    const docRef = doc(db, endpoint, docId);
-    await deleteDoc(docRef);
-  } catch (error) {
-    throw error;
-  }
+    try {
+        const docRef = doc(db, endpoint, docId);
+        await deleteDoc(docRef);
+    } catch (error) {
+        throw error;
+    }
 };
 
 export const getUserLists = async (userId: string, type: string) => {
     try {
         const listsRef = collection(db, LIST_COLLECTION_REF);
-        const q = query(listsRef, where("collaborators", "array-contains", userId));
 
-        const querySnapshot = await getDocs(q);
+        const q1 = query(listsRef, where("collaborators", "array-contains", userId));
+        const qs1 = await getDocs(q1);
 
+        const q2 = query(listsRef, where("creator", "==", userId));
+        const qs2 = await getDocs(q2);
+
+        const q3 = query(listsRef, where("pending", "array-contains", userId));
+        const qs3 = await getDocs(q3);
+
+        const seen = new Set();
         const unpinned: any[] = [];
         const pinned: any[] = [];
+        const pending: any[] = [];
 
-        querySnapshot.forEach((doc) => {
-            const data = { id: doc.id, isPinned: doc.data().isPinned, type: doc.data().type, ...doc.data() };
+        const allDocs = [...qs1.docs, ...qs2.docs];
+
+        allDocs.forEach((doc) => {
+            if (seen.has(doc.id)) return;
+            seen.add(doc.id);
+
+            const data = { id: doc.id, ...doc.data() } as { id: string; type: string; isPinned: boolean };
+
             if (data.type === type) {
                 if (data.isPinned) {
                     pinned.push(data);
@@ -273,15 +287,25 @@ export const getUserLists = async (userId: string, type: string) => {
             }
         });
 
+        qs3.docs.forEach((doc) => {
+            const data = { id: doc.id, ...doc.data() } as { id: string; type: string };
+
+            if (data.type === type) {
+                pending.push(data);
+            }
+        });
+
         return {
             lists: unpinned,
             pinned: pinned,
+            pending: pending,
         };
     } catch (error) {
         console.error("Erro ao buscar listas:", error);
         throw error;
     }
 };
+
 
 export const getUserInfo = async (userId: string) => {
     try {

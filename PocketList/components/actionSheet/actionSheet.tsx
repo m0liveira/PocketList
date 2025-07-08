@@ -97,6 +97,7 @@ export default function ActionSheet(props: any) {
                 </Text>
               </Pressable>
             ))}
+
             <Pressable style={styles.option} onPress={props.onClose}>
               <Text style={[globalStyles.text, styles.optionText]}>Fechar</Text>
             </Pressable>

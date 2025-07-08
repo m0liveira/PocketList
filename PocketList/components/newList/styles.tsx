@@ -1,4 +1,6 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
+
+const screenHeight = Dimensions.get("window").height;
 
 export const newListStyles = (colors: any) =>
   StyleSheet.create({
@@ -132,6 +134,57 @@ export const newListStyles = (colors: any) =>
       fontSize: 24,
       textAlign: "center",
       width: "80%",
+    },
+    scrollContainer: {
+      position: "relative",
+      flexGrow: 0,
+      width: "100%",
+      height: screenHeight * 0.2,
+    },
+    contentContainer: {
+      justifyContent: "flex-start",
+      height: "100%",
+      gap: 15,
+      paddingVertical: 15,
+    },
+    gradientTop: {
+      position: "absolute",
+      top: 0,
+      left: 0,
+      right: 0,
+      height: 30,
+      zIndex: 1,
+    },
+    gradientBottom: {
+      position: "absolute",
+      bottom: 0,
+      left: 0,
+      right: 0,
+      height: 30,
+      zIndex: 1,
+    },
+    friends: {
+      flexDirection: "column",
+      alignItems: "flex-start",
+      alignSelf: "flex-start",
+      justifyContent: "center",
+      borderColor: colors.n300,
+      borderWidth: 1,
+      borderRadius: 8,
+      paddingHorizontal: 16,
+      paddingVertical: 8,
+    },
+    selected: {
+      backgroundColor: colors.p50,
+      borderColor: colors.p100,
+    },
+    username: {
+      color: colors.n700,
+      fontSize: 16,
+    },
+    email: {
+      color: colors.n400,
+      fontSize: 10,
     },
     button: {
       position: "absolute",

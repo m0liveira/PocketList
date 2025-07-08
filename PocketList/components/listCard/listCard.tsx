@@ -13,6 +13,7 @@ import { listCardStyles } from "@/components/listCard/styles";
 
 // Services
 import { getUserInfo } from "@/services/firebaseService";
+import { getUserData } from "@/services/userService";
 
 // Components
 import * as Svgs from "@/components/svgs/Svgs";
@@ -46,21 +47,24 @@ export default function ListCard(props: any) {
   }
 
   useEffect(() => {
-    setCollaborators([]);
-
-    const getCollaborators = () => {
-      if (props.list.collaborators.length <= 1) {
+    const getCollaborators = async () => {
+      if (props.list.collaborators.length <= 0) {
         return;
       }
 
-      if (props.list.collaborators.length > 3) {
+      setCollaborators([
+        {
+          name: getUserData()?.username.charAt(0).toUpperCase() || "",
+          color: getRandomColor(),
+        },
+      ] as any);
+
+      if (props.list.collaborators.length >= 3) {
+        let result = await getUserInfo(props.list.collaborators[Math.floor(Math.random() * props.list.collaborators.length)]);
+        
         let aux = [
           {
-            name: props.list.collaborators[0].charAt(0).toUpperCase(),
-            color: getRandomColor(),
-          },
-          {
-            name: props.list.collaborators[1].charAt(0).toUpperCase(),
+            name: result.username.charAt(0).toUpperCase(),
             color: getRandomColor(),
           },
           {
@@ -99,7 +103,7 @@ export default function ListCard(props: any) {
             {props.list.name}
           </Text>
 
-          {props.list.collaborators.length > 1 ? (
+          {props.list.collaborators.length >= 1 ? (
             <View style={styles.userContainer}>
               {collaborators.map((collaborator: any, index: number) => (
                 <View
@@ -107,7 +111,7 @@ export default function ListCard(props: any) {
                   style={[
                     styles.user,
                     { backgroundColor: collaborator.color },
-                    index === 0 ? { left: 0 } : { left: 10 * index },
+                    index === 0 ? { left: 0 } : { left: 11 * index },
                   ]}
                 >
                   <Text

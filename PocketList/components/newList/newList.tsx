@@ -6,6 +6,7 @@ import {
   Pressable,
   TextInput,
   FlatList,
+  ScrollView,
   TouchableOpacity,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
@@ -14,6 +15,10 @@ import { Controller } from "react-hook-form";
 // Styles
 import { newListStyles } from "./styles";
 import { globalStyles } from "@/constants/GlobalStyles";
+
+// Services
+import { getUserData } from "@/services/userService";
+import { getUserInfo } from "@/services/firebaseService";
 
 // Components
 import * as Svgs from "@/components/svgs/Svgs";
@@ -26,9 +31,27 @@ const rndIndex = (list: any) => {
 export default function NewList(props: any) {
   const styles = newListStyles(props.colors);
   const [index, setIndex] = useState(rndIndex(props.imageList));
+  const [friends, setFriends]: any = useState([]);
 
   useEffect(() => {
+    setFriends([]);
+    props.setFriends([]);
     props.setValue("name", "");
+
+    getUserData()?.firestoreData.friends.friends.forEach(
+      async (friend: any) => {
+        const result = await getUserInfo(friend);
+
+        setFriends((prevFriends: any[]) => [
+          ...prevFriends,
+          {
+            id: result.id,
+            username: result.username,
+            email: result.email,
+          },
+        ]);
+      }
+    );
   }, []);
 
   const renderItem = ({ item }: { item: string }) => (
@@ -135,10 +158,65 @@ export default function NewList(props: any) {
         </View>
       ))}
 
-      <Pressable
-        onPress={props.handleSubmit}
-        style={styles.button}
-      >
+      {friends.length > 0 ? (
+        <>
+          <Text style={[globalStyles.text, styles.subtitle]}>
+            Convidar amigos
+          </Text>
+
+          <ScrollView
+            style={styles.scrollContainer}
+            contentContainerStyle={styles.contentContainer}
+          >
+            <LinearGradient
+              colors={[props.colors.bg200, "transparent"]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 0, y: 1 }}
+              style={[styles.gradientTop]}
+              pointerEvents="none"
+            />
+
+            {friends.map((friend: any) => (
+              <TouchableOpacity
+                key={friend.id}
+                style={[
+                  styles.friends,
+                  props.friends.includes(friend.id) ? styles.selected : null,
+                ]}
+                onPress={() => {
+                  props.setFriends((prevFriends: any) => {
+                    if (prevFriends.includes(friend.id)) {
+                      return prevFriends.filter(
+                        (id: string) => id !== friend.id
+                      );
+                    } else {
+                      return [...prevFriends, friend.id];
+                    }
+                  });
+                }}
+              >
+                <Text style={[globalStyles.text, styles.username]}>
+                  {friend.username}
+                </Text>
+
+                <Text style={[globalStyles.text, styles.email]}>
+                  {friend.email}
+                </Text>
+              </TouchableOpacity>
+            ))}
+
+            <LinearGradient
+              colors={["transparent", props.colors.bg200]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 0, y: 1 }}
+              style={[styles.gradientBottom]}
+              pointerEvents="none"
+            />
+          </ScrollView>
+        </>
+      ) : null}
+
+      <Pressable onPress={props.handleSubmit} style={styles.button}>
         <Text style={[globalStyles.text, styles.btnText]}>Criar lista</Text>
       </Pressable>
     </View>

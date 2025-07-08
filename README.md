@@ -126,6 +126,7 @@ _For more examples, please refer to the [Documentation](https://example.com)_ --
     - [x] Delete list
     - [x] Add list to pinned lists
     - [x] Remove list from pinned lists
+    - [ ] Add users to list
     - [ ] Join list
     - [x] Leave list
     - [ ] Get list items
