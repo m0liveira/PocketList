@@ -222,3 +222,86 @@ export const More = (props: any) => (
     />
   </Svg>
 );
+
+export const Share = (props: any) => (
+  <Svg viewBox="0 0 24 24" fill="none" style={props.classname}>
+    <Path
+      d="M18 8C19.6569 8 21 6.65685 21 5C21 3.34315 19.6569 2 18 2C16.3431 2 15 3.34315 15 5C15 6.65685 16.3431 8 18 8Z"
+      stroke={props.color || "#000"}
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <Path
+      d="M6 15C7.65685 15 9 13.6569 9 12C9 10.3431 7.65685 9 6 9C4.34315 9 3 10.3431 3 12C3 13.6569 4.34315 15 6 15Z"
+      stroke={props.color || "#000"}
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <Path
+      d="M18 22C19.6569 22 21 20.6569 21 19C21 17.3431 19.6569 16 18 16C16.3431 16 15 17.3431 15 19C15 20.6569 16.3431 22 18 22Z"
+      stroke={props.color || "#000"}
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <Path
+      d="M8.59 13.51L15.42 17.49"
+      stroke={props.color || "#000"}
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <Path
+      d="M15.41 6.51001L8.59 10.49"
+      stroke={props.color || "#000"}
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </Svg>
+);
+
+export const CheckMark = (props: any) => (
+  <Svg
+    width="14"
+    height="10"
+    viewBox="0 0 14 10"
+    fill="none"
+    style={props.classname}
+  >
+    <Path
+      d="M13 1L4.75 9L1 5.36364"
+      stroke={props.color || "#000"}
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </Svg>
+);
+
+export const Trash = (props: any) => (
+  <Svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    style={props.classname}
+  >
+    <Path
+      d="M3 6H5H21"
+      stroke={props.color || "#000"}
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <Path
+      d="M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6"
+      stroke={props.color || "#000"}
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </Svg>
+);

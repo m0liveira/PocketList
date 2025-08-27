@@ -124,15 +124,15 @@ _For more examples, please refer to the [Documentation](https://example.com)_ --
     - [x] Add new list
     - [x] Edit list
     - [x] Delete list
-    - [x] Add list to pinned lists
-    - [x] Remove list from pinned lists
-    - [ ] Add users to list
+    - [x] Add/remove list to pinned lists
+    - [x] Add users to list
     - [ ] Join list
     - [x] Leave list
-    - [ ] Get list items
-    - [ ] Add list items
-    - [ ] Edit list items
-    - [ ] Remove list items
+    - [x] Get list items
+    - [x] Add list items
+    - [x] Edit list items
+    - [x] Remove list items
+  - [ ] Repeat previous for Wishlists
 - [ ] Features
   - [x] Keep user logged in on app restart
   - [x] keep user out of auth screens when loggedd in

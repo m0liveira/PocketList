@@ -13,7 +13,7 @@ import {
     signOut,
     User,
 } from "firebase/auth";
-import { doc, setDoc, getDoc, collection, query, where, getDocs, deleteDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc, collection, query, where, getDocs, deleteDoc, updateDoc } from "firebase/firestore";
 import { getUserData } from "./userService";
 
 // ENDPOINTS
@@ -306,6 +306,31 @@ export const getUserLists = async (userId: string, type: string) => {
     }
 };
 
+export const getListById = async (id: string) => {
+    try {
+        const listRef = doc(db, LIST_COLLECTION_REF, id);
+        const listDoc = await getDoc(listRef);
+
+        if (!listDoc.exists()) {
+            throw new Error("Lista não encontrada");
+        }
+        
+        return listDoc.data();
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const updateListById = async (id: string, data: any) => {
+    try {
+        const listRef = doc(db, LIST_COLLECTION_REF, id);
+        await updateDoc(listRef, data);
+
+        return true;
+    } catch (error) {
+        throw error;
+    }
+}
 
 export const getUserInfo = async (userId: string) => {
     try {

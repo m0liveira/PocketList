@@ -17,6 +17,7 @@ import { getUserData } from "@/services/userService";
 
 // Components
 import * as Svgs from "@/components/svgs/Svgs";
+import { router } from "expo-router";
 
 export default function ListCard(props: any) {
   const styles = listCardStyles(props.colors);
@@ -30,16 +31,16 @@ export default function ListCard(props: any) {
 
   function getRandomColor() {
     const colors = [
-      "#FF5733",
-      "#33FF57",
-      "#3357FF",
-      "#FF33A1",
-      "#33FFF5",
-      "#F5FF33",
-      "#8E44AD",
-      "#E67E22",
-      "#2ECC71",
-      "#3498DB",
+      "#FFB3A7",
+      "#B5EAD7",
+      "#AEC6FF",
+      "#FFB3DE",
+      "#B3F0FF",
+      "#FFF5B3",
+      "#D1B3FF",
+      "#FFD6A5",
+      "#C5E1B3",
+      "#A7E0FF",
     ];
 
     const randomIndex = Math.floor(Math.random() * colors.length);
@@ -60,8 +61,12 @@ export default function ListCard(props: any) {
       ] as any);
 
       if (props.list.collaborators.length >= 3) {
-        let result = await getUserInfo(props.list.collaborators[Math.floor(Math.random() * props.list.collaborators.length)]);
-        
+        let result = await getUserInfo(
+          props.list.collaborators[
+            Math.floor(Math.random() * props.list.collaborators.length)
+          ]
+        );
+
         let aux = [
           {
             name: result.username.charAt(0).toUpperCase(),
@@ -96,7 +101,10 @@ export default function ListCard(props: any) {
   }, []);
 
   return (
-    <View style={[styles.container, props.style]}>
+    <Pressable
+      style={[styles.container, props.style]}
+      onPress={() => router.push(`screens/list/${props.list.id}`)}
+    >
       <View style={styles.wrapper}>
         <View style={styles.titleWrapper}>
           <Text style={[globalStyles.text, styles.title]}>
@@ -155,6 +163,6 @@ export default function ListCard(props: any) {
           {itemsBought ? itemsBought.length : 0}/{props.list.items.length}
         </Text>
       </View>
-    </View>
+    </Pressable>
   );
 }

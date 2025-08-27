@@ -52,6 +52,7 @@ export const Colors = {
     blob3: 'hsl(327, 100%, 96%)',
     shadow: '0 4px 8px 0 rgba(0, 0, 0, 0.15)',
     shadow100: '0 1px 4px 0 rgba(0, 0, 0, 0.10)',
+    shadow200: '0 4px 4px -1px rgba(0, 0, 0, 0.10)',
     navShadow: '0 0 8px 0 rgba(0, 0, 0, 0.15)',
 
     tint: tintColorLight,

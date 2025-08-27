@@ -14,7 +14,6 @@ export const homeStyles = (colors: any) =>
     },
     scrollContainer: {
       justifyContent: "flex-start",
-      // minHeight: "100%",
       paddingBottom: "80%",
     },
     emptyContainer: {

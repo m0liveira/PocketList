@@ -136,6 +136,7 @@ export default function Home() {
       setUnPinnedLists(result.lists);
       setPinnedLists(result.pinned);
       // TODO: Add pending lists to the notifications screen
+      // FIXME: Add char limit to list names
     }
   }
 
@@ -175,7 +176,7 @@ export default function Home() {
 
       setIsNewList(false);
       setIsLoading(false);
-      // router.replace("/(tabs)/home");
+      router.push(`screens/list/${list.id}`);
     } catch (error: any) {
       Alert.alert("Erro no login", error.message || "Erro desconhecido");
     } finally {

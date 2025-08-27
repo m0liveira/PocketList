@@ -6,7 +6,7 @@ import {
   DefaultTheme,
   ThemeProvider,
 } from "@react-navigation/native";
-import { Provider as PaperProvider, Portal } from "react-native-paper";
+import { Provider as PaperProvider } from "react-native-paper";
 
 // Styles
 import { Colors } from "@/constants/Colors";

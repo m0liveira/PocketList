@@ -1,0 +1,107 @@
+import { StyleSheet } from "react-native";
+
+export const listFormStyles = (colors: any) =>
+  StyleSheet.create({
+    keyboardAvoiding: {
+      flex: 1,
+      justifyContent: "flex-end",
+    },
+    container: {
+      position: "relative",
+      flex: 1,
+      backgroundColor: "rgba(0, 0, 0, 0.3)",
+      justifyContent: "flex-end",
+    },
+    overlay: {
+      position: "absolute",
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      borderWidth: 1,
+      zIndex: 0,
+    },
+    sheet: {
+      display: "flex",
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "flex-start",
+      flexWrap: "wrap",
+      gap: 20,
+      backgroundColor: colors.bg200,
+      borderTopLeftRadius: 16,
+      borderTopRightRadius: 16,
+      paddingHorizontal: 20,
+      paddingTop: 20,
+      paddingBottom: 50,
+      width: "100%",
+    },
+    svg: {
+      width: 24,
+      height: 24,
+    },
+    inputContainer: {
+      position: "relative",
+      display: "flex",
+      alignItems: "flex-start",
+      justifyContent: "center",
+      width: "auto",
+      height: "auto",
+    },
+    full: {
+      width: "87%",
+      height: 55,
+    },
+    medium: {
+      width: "40%",
+      height: 50,
+    },
+    small: {
+      width: "24%",
+      height: 50,
+    },
+    label: {
+      position: "absolute",
+      top: 0,
+      left: 0,
+      fontSize: 10,
+      fontWeight: "600",
+      color: colors.n400,
+      paddingHorizontal: 12,
+      paddingTop: 3,
+      zIndex: 2,
+    },
+    input: {
+      backgroundColor: colors.n50,
+      color: colors.text,
+      borderWidth: 1,
+      borderColor: colors.n300,
+      borderRadius: 10,
+      fontSize: 14,
+      fontWeight: "700",
+      width: "100%",
+      height: "100%",
+      paddingHorizontal: 12,
+    },
+    inputError: {
+      borderColor: colors.danger,
+      color: colors.danger,
+    },
+    error: {
+      color: colors.danger,
+      width: "100%",
+      fontSize: 10,
+    },
+    deleteContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center",
+      height: "auto",
+      marginTop: 40,
+    },
+    deleteText: {
+      color: colors.danger,
+      fontSize: 16,
+      paddingLeft: 16,
+    },
+  });
